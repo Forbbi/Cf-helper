@@ -19,9 +19,8 @@ echo "📦 Installing backend dependencies..."
 "$BACKEND/venv/bin/pip" install -r "$BACKEND/requirements.txt" -q
 
 echo "🚀 Starting backend on http://localhost:8000"
-# Use venv's uvicorn binary directly so subprocesses inherit the right environment
 cd "$BACKEND"
-"$BACKEND/venv/bin/uvicorn" main:app --reload --port 8000 &
+"$BACKEND/venv/bin/python" -m uvicorn main:app --port 8000 &
 BACKEND_PID=$!
 
 # ── Frontend ───────────────────────────────────────────────────────────────────
