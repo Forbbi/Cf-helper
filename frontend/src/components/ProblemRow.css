@@ -1,35 +1,71 @@
 .problem-row {
     display: grid;
-    grid-template-columns: 36px 80px 1fr 130px 120px 48px;
+    grid-template-columns: 44px 80px 1fr 140px 120px 48px;
     align-items: center;
-    padding: 12px 20px;
-    border-bottom: 1px solid rgba(99, 102, 241, 0.07);
-    transition: background 0.15s;
-    gap: 12px;
+    padding: 14px 32px;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s var(--transition);
+    gap: 16px;
+    position: relative;
+    background: transparent;
+    animation: fadeIn 0.4s var(--transition) both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .problem-row:hover {
-    background: rgba(99, 102, 241, 0.06);
+    background: var(--surface-hover);
+    transform: scale(1.005) translateX(4px);
+    z-index: 2;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.problem-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: var(--accent-vibrant);
+    transition: height 0.3s var(--transition);
+    border-radius: 0 2px 2px 0;
+}
+
+.problem-row:hover::before {
+    height: 60%;
 }
 
 .problem-row.solved {
-    background: rgba(74, 222, 128, 0.03);
+    background: rgba(74, 222, 128, 0.02);
 }
 
 .status-icon {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .status-icon.solved {
-    color: #4ade80;
+    color: var(--green);
+    filter: drop-shadow(0 0 5px rgba(74, 222, 128, 0.3));
 }
 
 .status-icon.unsolved {
-    color: #3a3a5c;
+    color: var(--text-dim);
 }
 
 .problem-id {
@@ -40,51 +76,52 @@
 .problem-num {
     font-size: 12px;
     font-weight: 600;
-    color: #555;
+    color: var(--text-dim);
     font-family: 'JetBrains Mono', 'Fira Mono', monospace;
 }
 
 .problem-name-col {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
     overflow: hidden;
 }
 
 .problem-name {
-    color: #c0c0e0;
+    color: var(--text);
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: color 0.15s;
+    transition: color 0.2s;
 }
 
 .problem-name:hover {
-    color: #818cf8;
+    color: var(--accent-vibrant);
 }
 
 .problem-tags {
     display: flex;
-    gap: 4px;
+    gap: 6px;
     flex-wrap: wrap;
 }
 
 .tag-badge {
     font-size: 10px;
-    padding: 2px 7px;
+    padding: 3px 10px;
     border-radius: 999px;
-    background: rgba(99, 102, 241, 0.1);
-    color: #6366f1;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: rgba(99, 102, 241, 0.08);
+    color: var(--accent-vibrant);
+    border: 1px solid rgba(99, 102, 241, 0.15);
     white-space: nowrap;
+    font-weight: 600;
 }
 
 .tag-badge.more {
-    background: rgba(255, 255, 255, 0.04);
-    color: #555;
+    background: var(--surface);
+    color: var(--text-dim);
     border-color: transparent;
 }
 
@@ -96,18 +133,21 @@
 .rating-badge {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     font-size: 13px;
     font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 8px;
+    padding: 4px 12px;
+    border-radius: 10px;
     border: 1px solid;
     white-space: nowrap;
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .rating-label {
     font-size: 10px;
-    font-weight: 400;
+    font-weight: 500;
+    text-transform: uppercase;
+    opacity: 0.7;
 }
 
 .problem-solved-count {
@@ -116,8 +156,9 @@
 }
 
 .solved-count {
-    font-size: 12px;
-    color: #555;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 500;
 }
 
 .problem-actions {
@@ -129,19 +170,21 @@
 .bookmark-btn {
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
-    color: #3a3a5c;
-    transition: all 0.15s;
-    padding: 2px 4px;
+    color: var(--text-dim);
+    transition: all 0.2s var(--transition);
+    padding: 4px;
     line-height: 1;
 }
 
 .bookmark-btn:hover {
-    color: #f59e0b;
-    transform: scale(1.15);
+    color: var(--yellow);
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 5px var(--yellow));
 }
 
 .bookmark-btn.bookmarked {
-    color: #f59e0b;
+    color: var(--yellow);
+    filter: drop-shadow(0 0 5px var(--yellow));
 }

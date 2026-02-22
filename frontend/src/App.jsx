@@ -12,6 +12,11 @@ export default function App() {
     return (
         <AppProvider>
             <div className="app">
+                <div className="bg-mesh">
+                    <div className="mesh-orb orb-1"></div>
+                    <div className="mesh-orb orb-2"></div>
+                    <div className="mesh-orb orb-3"></div>
+                </div>
                 <Navbar activePage={activePage} onNavigate={setActivePage} />
                 <div className="app-content">
                     {activePage === 'problems' && <ProblemsPage />}
