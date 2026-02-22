@@ -1,0 +1,201 @@
+.problems-page {
+    display: flex;
+    min-height: calc(100vh - 64px);
+}
+
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: rgba(10, 10, 26, 0.6);
+    border-right: 1px solid rgba(99, 102, 241, 0.1);
+    overflow-y: auto;
+    height: calc(100vh - 64px);
+    position: sticky;
+    top: 64px;
+}
+
+.problems-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.problems-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px 16px;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e0e0ff;
+    margin: 0;
+    background: linear-gradient(135deg, #e0e0ff, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.problems-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.total-count {
+    font-size: 13px;
+    color: #555;
+}
+
+.solved-badge {
+    font-size: 12px;
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 36px 80px 1fr 130px 120px 48px;
+    gap: 12px;
+    padding: 10px 20px;
+    background: rgba(99, 102, 241, 0.05);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.table-header>div {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #444;
+}
+
+.problems-list {
+    flex: 1;
+}
+
+.loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 80px 20px;
+    color: #555;
+    font-size: 14px;
+}
+
+.spinner {
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(99, 102, 241, 0.2);
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-state {
+    padding: 40px;
+    color: #f87171;
+    text-align: center;
+    font-size: 14px;
+    background: rgba(239, 68, 68, 0.05);
+    margin: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.empty-state {
+    padding: 60px;
+    color: #444;
+    text-align: center;
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+    border-top: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.page-btn {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.page-info {
+    font-size: 13px;
+    color: #555;
+}
+
+/* ── Infinite scroll feedback ─────────────────────────────────────────────── */
+.loading-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px 20px;
+    color: #555;
+    font-size: 13px;
+    border-top: 1px solid rgba(99, 102, 241, 0.08);
+}
+
+.all-loaded {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #3a3a5c;
+    border-top: 1px solid rgba(99, 102, 241, 0.06);
+    letter-spacing: 0.03em;
+}
+
+.prefetch-hint {
+    font-size: 11px;
+    color: #444460;
+    font-style: italic;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
