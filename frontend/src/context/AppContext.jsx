@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
 import { getUser, getSolved, getBookmarks, addBookmark, removeBookmark } from '../services/api';
 import axios from 'axios';
 
@@ -75,7 +75,7 @@ export function AppProvider({ children }) {
         } catch { }
     }, []);
 
-    const bookmarkedIds = new Set(bookmarks.map(b => `${b.contest_id}_${b.index}`));
+    const bookmarkedIds = useMemo(() => new Set(bookmarks.map(b => `${b.contest_id}_${b.index}`)), [bookmarks]);
 
     return (
         <AppContext.Provider value={{

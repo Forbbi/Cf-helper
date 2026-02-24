@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useApp } from '../context/AppContext';
 import './ProblemRow.css';
 
@@ -23,7 +24,7 @@ const ratingLabel = (r) => {
     return 'GM+';
 };
 
-export default function ProblemRow({ problem }) {
+const ProblemRow = memo(function ProblemRow({ problem }) {
     const { solvedSet, bookmarkedIds, bookmark, unbookmark } = useApp();
     const key = `${problem.contest_id}_${problem.index}`;
     const isSolved = solvedSet.has(key);
@@ -99,4 +100,6 @@ export default function ProblemRow({ problem }) {
             </div>
         </div>
     );
-}
+});
+
+export default ProblemRow;

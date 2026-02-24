@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getTags } from '../services/api';
 import './FilterPanel.css';
 
 export default function FilterPanel({ filters, onChange }) {
     const [allTags, setAllTags] = useState([]);
     const [tagSearch, setTagSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [tagsLoading, setTagsLoading] = useState(true);
+    const debounceRef = useRef(null);
 
     useEffect(() => {
         getTags().then(d => {
@@ -13,6 +15,14 @@ export default function FilterPanel({ filters, onChange }) {
             setTagsLoading(false);
         }).catch(() => setTagsLoading(false));
     }, []);
+
+    // Debounce tag search input by 300ms
+    const handleTagSearchChange = (e) => {
+        const val = e.target.value;
+        setTagSearch(val);
+        clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => setDebouncedSearch(val), 300);
+    };
 
     const toggleTag = (tag) => {
         const current = new Set(filters.tags);
@@ -22,7 +32,7 @@ export default function FilterPanel({ filters, onChange }) {
     };
 
     const filteredTags = allTags.filter(t =>
-        t.toLowerCase().includes(tagSearch.toLowerCase())
+        t.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
 
     return (
@@ -76,7 +86,7 @@ export default function FilterPanel({ filters, onChange }) {
                     className="tag-search"
                     placeholder="Search tags..."
                     value={tagSearch}
-                    onChange={e => setTagSearch(e.target.value)}
+                    onChange={handleTagSearchChange}
                 />
                 {filters.tags.length > 0 && (
                     <div className="selected-tags">

@@ -12,6 +12,15 @@ const ratingColor = (r) => {
     return '#f87171';
 };
 
+function timeAgo(dateStr) {
+    const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 2592000) return `${Math.floor(diff / 86400)}d ago`;
+    return new Date(dateStr).toLocaleDateString();
+}
+
 export default function BookmarksPage() {
     const { bookmarks, solvedSet, unbookmark } = useApp();
 
@@ -32,29 +41,55 @@ export default function BookmarksPage() {
                 <span className="bookmark-count">{bookmarks.length} saved</span>
             </div>
 
-            <div className="bookmarks-grid">
-                {bookmarks.map(bm => {
+            {/* Table Header */}
+            <div className="bm-table-header">
+                <div className="bmth-problem">Problem</div>
+                <div className="bmth-rating">Rating</div>
+                <div className="bmth-tags">Tags</div>
+                <div className="bmth-when">Saved</div>
+                <div className="bmth-remove"></div>
+            </div>
+
+            {/* Table Body */}
+            <div className="bm-table-body">
+                {bookmarks.map((bm, i) => {
                     const key = `${bm.contest_id}_${bm.index}`;
                     const isSolved = solvedSet.has(key);
                     return (
-                        <div key={bm.id} className={`bookmark-card ${isSolved ? 'solved' : ''}`}>
-                            <div className="bookmark-card-header">
-                                <span className="bm-id">{bm.contest_id}{bm.index}</span>
-                                {bm.rating && (
-                                    <span className="bm-rating" style={{ color: ratingColor(bm.rating), background: ratingColor(bm.rating) + '15', borderColor: ratingColor(bm.rating) + '44' }}>
-                                        {bm.rating}
-                                    </span>
-                                )}
-                                <button className="bm-remove" onClick={() => unbookmark(bm.contest_id, bm.index)} title="Remove">×</button>
+                        <div
+                            key={bm.id}
+                            className={`bm-row ${isSolved ? 'solved' : ''}`}
+                            style={{ animationDelay: `${Math.min(i * 0.04, 0.4)}s` }}
+                        >
+                            {/* Problem */}
+                            <div className="bmth-problem">
+                                <a href={bm.url} target="_blank" rel="noopener noreferrer" className="bm-prob-link">
+                                    <span className="bm-prob-id">{bm.contest_id}{bm.index}</span>
+                                    {bm.name}
+                                </a>
+                                {isSolved && <span className="bm-solved-pill">✓ Solved</span>}
                             </div>
 
-                            <a href={bm.url} target="_blank" rel="noopener noreferrer" className="bm-name">
-                                {bm.name}
-                            </a>
+                            {/* Rating */}
+                            <div className="bmth-rating">
+                                {bm.rating ? (
+                                    <span
+                                        className="bm-rating-chip"
+                                        style={{
+                                            color: ratingColor(bm.rating),
+                                            borderColor: ratingColor(bm.rating) + '44',
+                                            background: ratingColor(bm.rating) + '15',
+                                        }}
+                                    >
+                                        {bm.rating}
+                                    </span>
+                                ) : (
+                                    <span className="bm-no-rating">—</span>
+                                )}
+                            </div>
 
-                            {isSolved && <div className="bm-solved">✓ Solved</div>}
-
-                            <div className="bm-tags">
+                            {/* Tags */}
+                            <div className="bmth-tags">
                                 {(bm.tags || []).slice(0, 3).map(t => (
                                     <span key={t} className="bm-tag">{t}</span>
                                 ))}
@@ -63,8 +98,20 @@ export default function BookmarksPage() {
                                 )}
                             </div>
 
-                            <div className="bm-date">
-                                Saved {new Date(bm.created_at).toLocaleDateString()}
+                            {/* When */}
+                            <div className="bmth-when">
+                                <span className="bm-time">{timeAgo(bm.created_at)}</span>
+                            </div>
+
+                            {/* Remove */}
+                            <div className="bmth-remove">
+                                <button
+                                    className="bm-remove-btn"
+                                    onClick={() => unbookmark(bm.contest_id, bm.index)}
+                                    title="Remove bookmark"
+                                >
+                                    ★
+                                </button>
                             </div>
                         </div>
                     );

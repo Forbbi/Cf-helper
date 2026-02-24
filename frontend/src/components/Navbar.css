@@ -4,94 +4,110 @@
   z-index: 100;
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 0 32px;
-  height: 72px;
-  background: var(--glass);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  gap: 20px;
+  padding: 0 28px;
+  height: 68px;
+  background: rgba(6, 6, 18, 0.88);
+  backdrop-filter: blur(24px) saturate(200%);
+  border-bottom: 1px solid rgba(108, 99, 255, 0.12);
+  box-shadow: 0 1px 0 0 rgba(34, 211, 238, 0.08), 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
+/* Vivid dual-color gradient bottom line */
 .navbar::after {
   content: '';
   position: absolute;
   bottom: -1px;
   left: 0;
-  width: 100%;
+  right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-vibrant), transparent);
-  opacity: 0.3;
-  animation: shimmer 4s infinite linear;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 30%, var(--cyan) 70%, transparent 100%);
+  opacity: 0.7;
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
+/* ── Brand ─────────────────────────────────────────────────────────────── */
 .navbar-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .navbar-logo {
-  font-size: 24px;
-  filter: drop-shadow(0 0 8px var(--accent-glow));
+  font-size: 22px;
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+  transition: filter 0.3s var(--ease);
+}
+
+.navbar-brand:hover .navbar-logo {
+  filter: drop-shadow(0 0 14px var(--cyan-glow));
 }
 
 .navbar-title {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   color: var(--text);
   letter-spacing: -0.5px;
 }
 
 .navbar-title .accent {
-  background: linear-gradient(135deg, var(--accent-vibrant), #a78bfa);
+  background: linear-gradient(135deg, var(--accent-vibrant) 0%, var(--cyan) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+/* ── Nav Links ─────────────────────────────────────────────────────────── */
 .navbar-links {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .nav-link {
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
-  padding: 10px 18px;
-  border-radius: 12px;
+  padding: 8px 16px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.3s var(--transition);
+  transition: all 0.25s var(--ease);
   font-family: inherit;
   position: relative;
-  overflow: hidden;
+  letter-spacing: 0.01em;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--cyan));
+  transition: transform 0.3s var(--ease-spring);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .nav-link:hover {
   color: var(--text);
-  background: var(--surface-hover);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-link.active {
-  color: var(--accent-vibrant);
-  background: rgba(99, 102, 241, 0.12);
-  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2);
+  color: var(--text);
+  background: rgba(108, 99, 255, 0.1);
 }
 
+.nav-link.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ── Handle Form ───────────────────────────────────────────────────────── */
 .handle-form {
   margin-left: auto;
   position: relative;
@@ -100,24 +116,27 @@
 .handle-input-wrap {
   display: flex;
   align-items: center;
-  gap: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 0 0 1px var(--border), 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s var(--ease);
+}
+
+.handle-input-wrap:focus-within {
+  box-shadow: 0 0 0 1px var(--accent), 0 0 16px rgba(108, 99, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .handle-input {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  border-right: none;
-  border-radius: 12px 0 0 12px;
+  border: none;
+  border-right: 1px solid var(--border);
   color: var(--text);
-  font-size: 14px;
+  font-size: 13.5px;
   font-family: inherit;
-  padding: 10px 16px;
+  padding: 9px 15px;
   outline: none;
-  width: 200px;
-  transition: all 0.3s var(--transition);
+  width: 195px;
+  transition: width 0.3s var(--ease), background 0.2s;
 }
 
 .handle-input::placeholder {
@@ -125,29 +144,28 @@
 }
 
 .handle-input:focus {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--accent-vibrant);
-  width: 240px;
+  background: rgba(255, 255, 255, 0.07);
+  width: 230px;
 }
 
 .handle-btn {
-  background: linear-gradient(135deg, var(--accent), #8b5cf6);
-  border: 1px solid var(--border);
-  border-left: none;
-  border-radius: 0 12px 12px 0;
+  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 50%, var(--cyan) 100%);
+  background-size: 200% 200%;
+  border: none;
   color: #fff;
-  font-size: 18px;
-  padding: 10px 18px;
+  font-size: 17px;
+  padding: 9px 17px;
   cursor: pointer;
-  transition: all 0.3s var(--transition);
+  transition: background-position 0.4s var(--ease), filter 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .handle-btn:hover {
-  filter: brightness(1.1);
-  box-shadow: 0 0 15px var(--accent-glow);
+  background-position: 100% 100%;
+  filter: brightness(1.15);
 }
 
 .handle-error {
@@ -156,13 +174,13 @@
   right: 0;
   background: rgba(239, 68, 68, 0.1);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid rgba(239, 68, 68, 0.35);
   color: var(--red);
-  font-size: 11px;
+  font-size: 11.5px;
   padding: 6px 12px;
   border-radius: 8px;
   white-space: nowrap;
-  animation: shake 0.4s var(--transition);
+  animation: shake 0.4s var(--ease);
 }
 
 @keyframes shake {
@@ -181,31 +199,34 @@
   }
 }
 
+/* ── User Pill ─────────────────────────────────────────────────────────── */
 .user-pill {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: var(--surface);
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 8px 16px;
-  transition: all 0.3s var(--transition);
+  border-radius: 40px;
+  padding: 6px 14px 6px 6px;
+  transition: all 0.3s var(--ease);
+  flex-shrink: 0;
 }
 
 .user-pill:hover {
-  background: var(--surface-hover);
+  background: rgba(255, 255, 255, 0.07);
   border-color: var(--border-bright);
   transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.2);
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--accent-vibrant);
   padding: 2px;
-  background: var(--bg);
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  flex-shrink: 0;
 }
 
 .user-meta {
@@ -215,16 +236,16 @@
 }
 
 .user-handle {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
   line-height: 1.2;
 }
 
 .user-rank {
-  font-size: 11px;
+  font-size: 10.5px;
   line-height: 1;
   text-transform: capitalize;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
 }
