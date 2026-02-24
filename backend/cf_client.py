@@ -22,7 +22,7 @@ load_dotenv()
 
 CF_KEY = os.getenv("key", "")
 CF_SECRET = os.getenv("secret", "")
-CF_DEFAULT_HANDLE = os.getenv("CF_DEFAULT_HANDLE", "Forbbi")
+CF_DEFAULT_HANDLE = os.getenv("CF_DEFAULT_HANDLE", "Tourist")
 
 _executor = ThreadPoolExecutor(max_workers=4)
 
