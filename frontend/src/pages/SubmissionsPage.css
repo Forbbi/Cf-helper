@@ -455,6 +455,28 @@
     font-weight: 700;
 }
 
+.sortable-header {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.sortable-header:hover {
+    color: var(--text);
+}
+
+.sort-icon {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.sort-icon.inactive {
+    opacity: 0.3;
+}
+
 .sub-table-body {
     background: rgba(255, 255, 255, 0.015);
     border: 1px solid var(--border);

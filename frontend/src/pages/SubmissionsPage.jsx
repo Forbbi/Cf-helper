@@ -57,6 +57,11 @@ function StatCard({ label, value, sub, color }) {
     );
 }
 
+const SortIcon = ({ columnKey, sortConfig }) => {
+    if (sortConfig.key !== columnKey) return <span className="sort-icon inactive">↕</span>;
+    return <span className="sort-icon active">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>;
+};
+
 function HBarChart({ data, maxVal, colorFn }) {
     if (!data.length) return null;
     return (
@@ -126,10 +131,21 @@ export default function SubmissionsPage() {
     const [verdictFilter, setVerdictFilter] = useState('all');
     const [timeRange, setTimeRange] = useState('1y');
     const [page, setPage] = useState(1);
+    const [sortConfig, setSortConfig] = useState({ key: 'time_seconds', direction: 'desc' });
     // For tag drill-down panel
     const [selectedStuckTag, setSelectedStuckTag] = useState(null);
 
     const PAGE_SIZE = 50;
+
+    const handleSort = (key) => {
+        let direction = 'desc';
+        if (sortConfig.key === key && sortConfig.direction === 'desc') {
+            direction = 'asc';
+        } else if (sortConfig.key !== key) {
+            direction = key === 'rating' ? 'desc' : (key === 'time_seconds' ? 'desc' : 'asc');
+        }
+        setSortConfig({ key, direction });
+    };
 
     useEffect(() => {
         if (!effectiveHandle) return;
@@ -259,9 +275,8 @@ export default function SubmissionsPage() {
         );
     }, [selectedStuckTag, stuckProblems]);
 
-    // ── Filtered table ────────────────────────────────────────────────────────
     const filtered = useMemo(() => {
-        return rangedSubmissions.filter(s => {
+        const result = rangedSubmissions.filter(s => {
             const nameMatch = s.problem.name.toLowerCase().includes(search.toLowerCase());
             const verdictMatch =
                 verdictFilter === 'all' ||
@@ -269,7 +284,29 @@ export default function SubmissionsPage() {
                 (verdictFilter === 'wa' && s.verdict !== 'OK');
             return nameMatch && verdictMatch;
         });
-    }, [rangedSubmissions, search, verdictFilter]);
+
+        if (sortConfig.key) {
+            result.sort((a, b) => {
+                let aVal, bVal;
+                if (sortConfig.key === 'verdict') {
+                    aVal = a.verdict; bVal = b.verdict;
+                } else if (sortConfig.key === 'problem') {
+                    aVal = `${a.problem.contest_id}${a.problem.index}`;
+                    bVal = `${b.problem.contest_id}${b.problem.index}`;
+                } else if (sortConfig.key === 'rating') {
+                    aVal = a.problem.rating || 0;
+                    bVal = b.problem.rating || 0;
+                } else if (sortConfig.key === 'time_seconds') {
+                    aVal = a.time_seconds; bVal = b.time_seconds;
+                }
+
+                if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+        return result;
+    }, [rangedSubmissions, search, verdictFilter, sortConfig]);
 
     const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
     const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -396,11 +433,19 @@ export default function SubmissionsPage() {
                         </div>
 
                         <div className="sub-table-header">
-                            <div className="sth-verdict">Verdict</div>
-                            <div className="sth-problem">Problem</div>
-                            <div className="sth-rating">Rating</div>
+                            <div className="sth-verdict sortable-header" onClick={() => handleSort('verdict')}>
+                                Verdict <SortIcon columnKey="verdict" sortConfig={sortConfig} />
+                            </div>
+                            <div className="sth-problem sortable-header" onClick={() => handleSort('problem')}>
+                                Problem <SortIcon columnKey="problem" sortConfig={sortConfig} />
+                            </div>
+                            <div className="sth-rating sortable-header" onClick={() => handleSort('rating')}>
+                                Rating <SortIcon columnKey="rating" sortConfig={sortConfig} />
+                            </div>
                             <div className="sth-tags">Tags</div>
-                            <div className="sth-time">When</div>
+                            <div className="sth-time sortable-header" onClick={() => handleSort('time_seconds')}>
+                                When <SortIcon columnKey="time_seconds" sortConfig={sortConfig} />
+                            </div>
                             <div className="sth-bm"></div>
                         </div>
 

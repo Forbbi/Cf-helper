@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import FilterPanel from '../components/FilterPanel';
 import ProblemRow from '../components/ProblemRow';
 import { getProblems, getProblemsCount } from '../services/api';
@@ -9,9 +9,25 @@ const PAGE_SIZE = 50;   // problems shown per page
 const BATCH_PAGES = 3;   // how many PAGE_SIZE pages to fetch per backend call
 const BATCH_SIZE = PAGE_SIZE * BATCH_PAGES;   // 150
 
+const SortIcon = ({ columnKey, sortConfig }) => {
+    if (sortConfig.key !== columnKey) return <span className="sort-icon inactive">↕</span>;
+    return <span className="sort-icon active">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>;
+};
+
 export default function ProblemsPage() {
     const { handle, solvedSet } = useApp();
     const [filters, setFilters] = useState({ tags: [], min_rating: null, max_rating: null, status: 'all' });
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+
+    const handleSort = (key) => {
+        let direction = 'desc';
+        if (sortConfig.key === key && sortConfig.direction === 'desc') {
+            direction = 'asc';
+        } else if (sortConfig.key !== key) {
+            direction = key === 'rating' || key === 'solved_count' ? 'desc' : 'asc';
+        }
+        setSortConfig({ key, direction });
+    };
 
     // All problems fetched so far (grows in chunks of BATCH_SIZE)
     const [buffer, setBuffer] = useState([]);
@@ -86,9 +102,33 @@ export default function ProblemsPage() {
         return true;
     });
 
+    const sortedBuffer = useMemo(() => {
+        let sortable = [...filteredBuffer];
+        if (sortConfig.key) {
+            sortable.sort((a, b) => {
+                let aVal, bVal;
+                if (sortConfig.key === 'id') {
+                    aVal = `${a.contest_id}${a.index}`;
+                    bVal = `${b.contest_id}${b.index}`;
+                } else if (sortConfig.key === 'name') {
+                    aVal = a.name; bVal = b.name;
+                } else if (sortConfig.key === 'rating') {
+                    aVal = a.rating || 0; bVal = b.rating || 0;
+                } else if (sortConfig.key === 'solved_count') {
+                    aVal = a.solved_count || 0; bVal = b.solved_count || 0;
+                }
+
+                if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+        return sortable;
+    }, [filteredBuffer, sortConfig]);
+
     // Problems visible on the current page
     const start = (page - 1) * PAGE_SIZE;
-    const pageProblems = filteredBuffer.slice(start, start + PAGE_SIZE);
+    const pageProblems = sortedBuffer.slice(start, start + PAGE_SIZE);
 
     // Total pages we can show from buffer so far (capped by real total)
     const totalBufferPages = Math.ceil(filteredBuffer.length / PAGE_SIZE);
@@ -135,10 +175,10 @@ export default function ProblemsPage() {
 
                 <div className="table-header">
                     <div className="th-status">Status</div>
-                    <div className="th-id">#</div>
-                    <div className="th-name">Problem</div>
-                    <div className="th-rating">Rating</div>
-                    <div className="th-count">Accepted</div>
+                    <div className="th-id sortable-header" onClick={() => handleSort('id')}># <SortIcon columnKey="id" sortConfig={sortConfig} /></div>
+                    <div className="th-name sortable-header" onClick={() => handleSort('name')}>Problem <SortIcon columnKey="name" sortConfig={sortConfig} /></div>
+                    <div className="th-rating sortable-header" onClick={() => handleSort('rating')}>Rating <SortIcon columnKey="rating" sortConfig={sortConfig} /></div>
+                    <div className="th-count sortable-header" onClick={() => handleSort('solved_count')}>Accepted <SortIcon columnKey="solved_count" sortConfig={sortConfig} /></div>
                     <div className="th-actions"></div>
                 </div>
 

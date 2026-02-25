@@ -1,3 +1,4 @@
+import { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import './BookmarksPage.css';
 
@@ -21,8 +22,50 @@ function timeAgo(dateStr) {
     return new Date(dateStr).toLocaleDateString();
 }
 
+const SortIcon = ({ columnKey, sortConfig }) => {
+    if (sortConfig.key !== columnKey) return <span className="sort-icon inactive">↕</span>;
+    return <span className="sort-icon active">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>;
+};
+
 export default function BookmarksPage() {
     const { bookmarks, solvedSet, unbookmark } = useApp();
+    const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
+
+    const handleSort = (key) => {
+        let direction = 'desc';
+        if (sortConfig.key === key && sortConfig.direction === 'desc') {
+            direction = 'asc';
+        } else if (sortConfig.key !== key) {
+            direction = key === 'rating' ? 'desc' : (key === 'created_at' ? 'desc' : 'asc');
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const sortedBookmarks = useMemo(() => {
+        let sortable = [...bookmarks];
+        if (sortConfig.key !== null) {
+            sortable.sort((a, b) => {
+                let aVal = a[sortConfig.key];
+                let bVal = b[sortConfig.key];
+
+                if (sortConfig.key === 'problem') {
+                    aVal = `${a.contest_id}${a.index}`;
+                    bVal = `${b.contest_id}${b.index}`;
+                } else if (sortConfig.key === 'created_at') {
+                    aVal = new Date(a.created_at).getTime();
+                    bVal = new Date(b.created_at).getTime();
+                } else if (sortConfig.key === 'rating') {
+                    aVal = a.rating || 0;
+                    bVal = b.rating || 0;
+                }
+
+                if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+        return sortable;
+    }, [bookmarks, sortConfig]);
 
     if (bookmarks.length === 0) {
         return (
@@ -43,16 +86,22 @@ export default function BookmarksPage() {
 
             {/* Table Header */}
             <div className="bm-table-header">
-                <div className="bmth-problem">Problem</div>
-                <div className="bmth-rating">Rating</div>
+                <div className="bmth-problem sortable-header" onClick={() => handleSort('problem')}>
+                    Problem <SortIcon columnKey="problem" sortConfig={sortConfig} />
+                </div>
+                <div className="bmth-rating sortable-header" onClick={() => handleSort('rating')}>
+                    Rating <SortIcon columnKey="rating" sortConfig={sortConfig} />
+                </div>
                 <div className="bmth-tags">Tags</div>
-                <div className="bmth-when">Saved</div>
+                <div className="bmth-when sortable-header" onClick={() => handleSort('created_at')}>
+                    Saved <SortIcon columnKey="created_at" sortConfig={sortConfig} />
+                </div>
                 <div className="bmth-remove"></div>
             </div>
 
             {/* Table Body */}
             <div className="bm-table-body">
-                {bookmarks.map((bm, i) => {
+                {sortedBookmarks.map((bm, i) => {
                     const key = `${bm.contest_id}_${bm.index}`;
                     const isSolved = solvedSet.has(key);
                     return (
