@@ -6,7 +6,7 @@
 
 .filter-section {
     padding: 18px 16px;
-    border-bottom: 1px solid rgba(108, 99, 255, 0.1);
+    border-bottom: 1px solid var(--border);
 }
 
 .filter-section:last-child {
@@ -15,13 +15,10 @@
 
 .filter-heading {
     font-size: 10.5px;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background: linear-gradient(90deg, var(--accent-vibrant), var(--cyan));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.09em;
+    color: var(--accent-vibrant);
     margin: 0 0 12px 0;
     display: flex;
     align-items: center;
@@ -29,14 +26,14 @@
 }
 
 .tag-count {
-    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    background: var(--accent);
     color: #fff;
     font-size: 9.5px;
     border-radius: 999px;
     padding: 1px 7px;
-    -webkit-text-fill-color: #fff;
     text-transform: none;
     letter-spacing: 0;
+    font-weight: 600;
 }
 
 /* ── Rating Range ─────────────────────────────────────────────────────────── */
@@ -65,7 +62,7 @@
     width: 82px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 7px;
     color: var(--text);
     font-size: 13px;
     font-family: inherit;
@@ -76,7 +73,7 @@
 
 .rating-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 8px rgba(108, 99, 255, 0.25);
+    box-shadow: 0 0 8px rgba(207, 103, 57, 0.2);
 }
 
 .rating-dash {
@@ -99,7 +96,7 @@
     font-size: 12px;
     font-family: inherit;
     padding: 5px 11px;
-    border-radius: 8px;
+    border-radius: 7px;
     cursor: pointer;
     transition: all 0.2s var(--ease);
     font-weight: 500;
@@ -108,14 +105,14 @@
 .preset-btn:hover {
     border-color: var(--border-bright);
     color: var(--text);
-    background: rgba(108, 99, 255, 0.08);
+    background: rgba(207, 103, 57, 0.07);
 }
 
 .preset-btn.active {
-    background: rgba(108, 99, 255, 0.18);
-    border-color: rgba(108, 99, 255, 0.5);
+    background: rgba(207, 103, 57, 0.15);
+    border-color: rgba(207, 103, 57, 0.45);
     color: var(--accent-vibrant);
-    box-shadow: 0 0 10px rgba(108, 99, 255, 0.2);
+    box-shadow: 0 0 8px rgba(207, 103, 57, 0.15);
 }
 
 .preset-btn.clear {
@@ -127,7 +124,7 @@
     width: 100%;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 7px;
     color: var(--text);
     font-size: 12.5px;
     font-family: inherit;
@@ -140,7 +137,7 @@
 
 .tag-search:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
+    box-shadow: 0 0 8px rgba(207, 103, 57, 0.18);
 }
 
 .tag-search::placeholder {
@@ -156,9 +153,9 @@
 }
 
 .tag-chip {
-    background: rgba(108, 99, 255, 0.18);
+    background: rgba(207, 103, 57, 0.15);
     color: var(--accent-vibrant);
-    border: 1px solid rgba(108, 99, 255, 0.4);
+    border: 1px solid rgba(207, 103, 57, 0.35);
     font-size: 11px;
     font-weight: 600;
     padding: 3px 9px;
@@ -168,9 +165,9 @@
 }
 
 .tag-chip:hover {
-    background: rgba(248, 113, 113, 0.15);
+    background: rgba(176, 94, 94, 0.15);
     color: var(--red);
-    border-color: rgba(248, 113, 113, 0.4);
+    border-color: rgba(176, 94, 94, 0.35);
 }
 
 /* ── Tags List ───────────────────────────────────────────────────────────── */
@@ -191,18 +188,18 @@
     font-family: inherit;
     text-align: left;
     padding: 6px 9px;
-    border-radius: 7px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.15s var(--ease);
 }
 
 .tag-item:hover {
-    background: rgba(108, 99, 255, 0.1);
+    background: rgba(207, 103, 57, 0.08);
     color: var(--text);
 }
 
 .tag-item.active {
-    background: rgba(108, 99, 255, 0.18);
+    background: rgba(207, 103, 57, 0.15);
     color: var(--accent-vibrant);
     font-weight: 600;
 }

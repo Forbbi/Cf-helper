@@ -7,7 +7,7 @@
 .sidebar {
     width: 272px;
     flex-shrink: 0;
-    background: rgba(6, 6, 18, 0.6);
+    background: rgba(20, 20, 16, 0.6);
     backdrop-filter: blur(16px);
     border-right: 1px solid var(--border);
     overflow-y: auto;
@@ -39,11 +39,11 @@
     font-size: 26px;
     font-weight: 900;
     margin: 0;
-    background: linear-gradient(135deg, #fff 30%, var(--accent-vibrant) 70%, var(--cyan) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -0.5px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.3px;
 }
 
 .problems-meta {
@@ -96,7 +96,7 @@
     grid-template-columns: 40px 70px 1fr 120px 100px 44px;
     gap: 8px;
     padding: 10px 16px;
-    background: rgba(108, 99, 255, 0.04);
+    background: rgba(207, 103, 57, 0.03);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -200,10 +200,10 @@
 }
 
 .page-btn:hover:not(:disabled) {
-    background: rgba(108, 99, 255, 0.15);
+    background: rgba(207, 103, 57, 0.12);
     border-color: var(--border-bright);
     color: var(--accent-vibrant);
-    box-shadow: 0 0 12px rgba(108, 99, 255, 0.2);
+    box-shadow: 0 0 10px rgba(207, 103, 57, 0.18);
 }
 
 .page-btn:disabled {
