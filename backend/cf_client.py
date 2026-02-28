@@ -11,7 +11,7 @@ import string
 import time
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
-from typing import List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 import requests
 from dotenv import load_dotenv
@@ -25,6 +25,15 @@ CF_SECRET = os.getenv("secret", "")
 CF_DEFAULT_HANDLE = os.getenv("CF_DEFAULT_HANDLE", "Tourist")
 
 _executor = ThreadPoolExecutor(max_workers=4)
+
+# ─── Backend TTL caches ──────────────────────────────────────────────────────
+# Cache the full CF problem list (tag-agnostic fetch) for 10 minutes.
+_problemset_cache: Dict[str, object] = {}   # key → {data, ts}
+PROBLEMSET_TTL = 10 * 60  # 10 min
+
+# Cache per-user solved sets for 5 minutes.
+_solved_cache: Dict[str, object] = {}       # handle → {data, ts}
+SOLVED_TTL = 5 * 60  # 5 min
 
 
 async def _run(fn, *args, **kwargs):
@@ -58,7 +67,12 @@ def _get_user_status_sync(handle: str, count: int = 10000):
 
 
 def _get_problemset_sync(tags: Optional[str] = None):
-    """Returns (problems_list, stats_list) matching cf_helper's return format."""
+    """Returns (problems_list, stats_list). Results are cached for 10 min when tags=None."""
+    cache_key = tags or "__all__"
+    entry = _problemset_cache.get(cache_key)
+    if entry and time.time() - entry["ts"] < PROBLEMSET_TTL:
+        return entry["data"]
+
     url = "https://codeforces.com/api/problemset.problems"
     params = {}
     if tags:
@@ -68,7 +82,9 @@ def _get_problemset_sync(tags: Optional[str] = None):
     data = r.json()
     if data["status"] != "OK":
         raise ValueError(data.get("comment", "Unknown error"))
-    return data["result"]["problems"], data["result"]["problemStatistics"]
+    result = data["result"]["problems"], data["result"]["problemStatistics"]
+    _problemset_cache[cache_key] = {"data": result, "ts": time.time()}
+    return result
 
 
 def _generate_api_sig(method: str, params: dict, secret: str) -> str:
@@ -115,13 +131,19 @@ async def get_user_info(handle: str) -> UserInfo:
 
 
 async def get_user_solved(handle: str) -> Set[Tuple[Optional[int], str]]:
-    """Return set of (contestId, index) for all AC submissions."""
+    """Return set of (contestId, index) for all AC submissions. Cached per handle for 5 min."""
+    entry = _solved_cache.get(handle)
+    if entry and time.time() - entry["ts"] < SOLVED_TTL:
+        return entry["data"]
+
     submissions = await _run(_get_user_status_sync, handle, 10000)
     solved = set()
     for sub in submissions:
         if sub.get("verdict") == "OK":
             p = sub.get("problem", {})
             solved.add((p.get("contestId"), p.get("index", "")))
+
+    _solved_cache[handle] = {"data": solved, "ts": time.time()}
     return solved
 
 
