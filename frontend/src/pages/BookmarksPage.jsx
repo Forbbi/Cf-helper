@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 import './BookmarksPage.css';
 
@@ -11,6 +12,19 @@ const ratingColor = (r) => {
     if (r < 2400) return '#c084fc';
     if (r < 3000) return '#fb923c';
     return '#f87171';
+};
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.04 }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0 }
 };
 
 function timeAgo(dateStr) {
@@ -100,15 +114,15 @@ export default function BookmarksPage() {
             </div>
 
             {/* Table Body */}
-            <div className="bm-table-body">
+            <motion.div className="bm-table-body" variants={containerVariants} initial="hidden" animate="visible">
                 {sortedBookmarks.map((bm, i) => {
                     const key = `${bm.contest_id}_${bm.index}`;
                     const isSolved = solvedSet.has(key);
                     return (
-                        <div
+                        <motion.div
                             key={bm.id}
+                            variants={itemVariants}
                             className={`bm-row ${isSolved ? 'solved' : ''}`}
-                            style={{ animationDelay: `${Math.min(i * 0.04, 0.4)}s` }}
                         >
                             {/* Problem */}
                             <div className="bmth-problem">
@@ -162,10 +176,10 @@ export default function BookmarksPage() {
                                     ★
                                 </button>
                             </div>
-                        </div>
+                        </motion.div>
                     );
                 })}
-            </div>
+            </motion.div>
         </div>
     );
 }

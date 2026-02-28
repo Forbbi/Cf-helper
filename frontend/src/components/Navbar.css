@@ -7,10 +7,10 @@
   gap: 20px;
   padding: 0 28px;
   height: 56px;
-  background: rgba(22, 21, 17, 0.92);
-  backdrop-filter: blur(24px) saturate(160%);
+  background: rgba(15, 15, 13, 0.85);
+  backdrop-filter: blur(28px) saturate(180%);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 0 0 rgba(207, 103, 57, 0.06), 0 4px 20px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 0 0 rgba(223, 118, 70, 0.08), 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* Warm bottom accent line */
@@ -37,12 +37,13 @@
 
 .navbar-logo {
   font-size: 20px;
-  filter: drop-shadow(0 0 8px var(--accent-glow));
-  transition: filter 0.3s var(--ease);
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+  transition: all 0.3s var(--ease);
 }
 
 .navbar-brand:hover .navbar-logo {
-  filter: drop-shadow(0 0 12px rgba(197, 164, 126, 0.5));
+  filter: drop-shadow(0 0 16px rgba(216, 180, 143, 0.6));
+  transform: scale(1.05);
 }
 
 .navbar-title {
@@ -96,12 +97,12 @@
 
 .nav-link:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .nav-link.active {
   color: var(--text);
-  background: rgba(207, 103, 57, 0.1);
+  background: rgba(223, 118, 70, 0.12);
 }
 
 .nav-link.active::after {
@@ -119,16 +120,17 @@
   align-items: center;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 0 1px var(--border), 0 2px 10px rgba(0, 0, 0, 0.25);
-  transition: box-shadow 0.3s var(--ease);
+  box-shadow: 0 0 0 1px var(--border), 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s var(--ease);
 }
 
 .handle-input-wrap:focus-within {
-  box-shadow: 0 0 0 1px var(--accent), 0 0 12px rgba(207, 103, 57, 0.2), 0 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 16px rgba(223, 118, 70, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
 }
 
 .handle-input {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   border: none;
   border-right: 1px solid var(--border);
   color: var(--text);
@@ -137,7 +139,7 @@
   padding: 8px 14px;
   outline: none;
   width: 190px;
-  transition: width 0.3s var(--ease), background 0.2s;
+  transition: width 0.4s var(--ease-spring), background 0.3s;
 }
 
 .handle-input::placeholder {
@@ -213,10 +215,10 @@
 }
 
 .user-pill:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.08);
   border-color: var(--border-bright);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(207, 103, 57, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(223, 118, 70, 0.2);
 }
 
 .user-avatar {

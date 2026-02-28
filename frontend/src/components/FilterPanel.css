@@ -73,7 +73,7 @@
 
 .rating-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 8px rgba(207, 103, 57, 0.2);
+    box-shadow: 0 0 12px rgba(223, 118, 70, 0.25);
 }
 
 .rating-dash {
@@ -90,7 +90,7 @@
 }
 
 .preset-btn {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border);
     color: var(--text-secondary);
     font-size: 12px;
@@ -98,7 +98,7 @@
     padding: 5px 11px;
     border-radius: 7px;
     cursor: pointer;
-    transition: all 0.2s var(--ease);
+    transition: all 0.3s var(--ease);
     font-weight: 500;
 }
 
@@ -109,10 +109,11 @@
 }
 
 .preset-btn.active {
-    background: rgba(207, 103, 57, 0.15);
-    border-color: rgba(207, 103, 57, 0.45);
+    background: rgba(223, 118, 70, 0.15);
+    border-color: rgba(223, 118, 70, 0.5);
     color: var(--accent-vibrant);
-    box-shadow: 0 0 8px rgba(207, 103, 57, 0.15);
+    box-shadow: 0 0 12px rgba(223, 118, 70, 0.2);
+    transform: translateY(-1px);
 }
 
 .preset-btn.clear {
@@ -137,7 +138,7 @@
 
 .tag-search:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 8px rgba(207, 103, 57, 0.18);
+    box-shadow: 0 0 12px rgba(223, 118, 70, 0.25);
 }
 
 .tag-search::placeholder {
@@ -153,15 +154,15 @@
 }
 
 .tag-chip {
-    background: rgba(207, 103, 57, 0.15);
+    background: rgba(223, 118, 70, 0.15);
     color: var(--accent-vibrant);
-    border: 1px solid rgba(207, 103, 57, 0.35);
+    border: 1px solid rgba(223, 118, 70, 0.35);
     font-size: 11px;
     font-weight: 600;
     padding: 3px 9px;
     border-radius: 999px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.2s ease;
 }
 
 .tag-chip:hover {

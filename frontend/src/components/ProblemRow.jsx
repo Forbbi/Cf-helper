@@ -1,6 +1,12 @@
 import { memo } from 'react';
+import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 import './ProblemRow.css';
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+};
 
 const ratingColor = (r) => {
     if (!r) return '#888';
@@ -37,7 +43,7 @@ const ProblemRow = memo(function ProblemRow({ problem }) {
     };
 
     return (
-        <div className={`problem-row ${isSolved ? 'solved' : ''}`}>
+        <motion.div variants={itemVariants} className={`problem-row ${isSolved ? 'solved' : ''}`}>
             <div className="problem-status">
                 {isSolved ? (
                     <span className="status-icon solved" title="Solved">✓</span>
@@ -98,7 +104,7 @@ const ProblemRow = memo(function ProblemRow({ problem }) {
                     {isBookmarked ? '★' : '☆'}
                 </button>
             </div>
-        </div>
+        </motion.div>
     );
 });
 

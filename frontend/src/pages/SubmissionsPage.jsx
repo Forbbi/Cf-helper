@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 import { getSubmissions } from '../services/api';
 import './SubmissionsPage.css';
@@ -13,6 +14,19 @@ const VERDICT_LABEL = {
     CHALLENGED: 'Hacked',
     SKIPPED: 'Skipped',
     PARTIAL: 'Partial',
+};
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.02 }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 }
 };
 
 const ratingColor = (r) => {
@@ -449,7 +463,7 @@ export default function SubmissionsPage() {
                             <div className="sth-bm"></div>
                         </div>
 
-                        <div className="sub-table-body">
+                        <motion.div className="sub-table-body" variants={containerVariants} initial="hidden" animate="visible" key={page}>
                             {paginated.length === 0 ? (
                                 <div className="sub-empty-row">No submissions match filters.</div>
                             ) : (
@@ -459,7 +473,7 @@ export default function SubmissionsPage() {
                                     const key = `${sub.problem.contest_id}_${sub.problem.index}`;
                                     const isBookmarked = bookmarkedIds?.has(key);
                                     return (
-                                        <div key={sub.id} className={`sub-row ${isAC ? 'ac' : 'wa'}`}>
+                                        <motion.div variants={itemVariants} key={sub.id} className={`sub-row ${isAC ? 'ac' : 'wa'}`}>
                                             <div className="sth-verdict">
                                                 <span className={`verdict-badge ${isAC ? 'ac' : 'wa'}`}>
                                                     {isAC ? '✓' : '✗'} {verdictLabel}
@@ -493,11 +507,11 @@ export default function SubmissionsPage() {
                                                     }
                                                 >{isBookmarked ? '★' : '☆'}</button>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     );
                                 })
                             )}
-                        </div>
+                        </motion.div>
 
                         {totalPages > 1 && (
                             <div className="sub-pagination">

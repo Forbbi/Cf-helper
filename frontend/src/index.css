@@ -10,47 +10,47 @@
 
 :root {
     /* ── Core backgrounds ──────────────────────────────────────── */
-    --bg:           #1a1915;
-    --bg-depth:     #141410;
-    --surface:      rgba(255, 255, 255, 0.04);
-    --surface-hover: rgba(255, 255, 255, 0.07);
-    --glass:        rgba(26, 25, 21, 0.88);
+    --bg:           #0f0f0d;
+    --bg-depth:     #0a0a09;
+    --surface:      rgba(255, 255, 255, 0.03);
+    --surface-hover: rgba(255, 255, 255, 0.08);
+    --glass:        rgba(15, 15, 13, 0.85);
 
     /* ── Borders ───────────────────────────────────────────────── */
-    --border:        rgba(255, 255, 255, 0.08);
-    --border-bright: rgba(255, 255, 255, 0.16);
-    --border-glow:   rgba(218, 119, 86, 0.25);
+    --border:        rgba(255, 255, 255, 0.06);
+    --border-bright: rgba(255, 255, 255, 0.15);
+    --border-glow:   rgba(218, 119, 86, 0.35);
 
     /* ── Primary accent: Claude coral/terracotta ─────────────── */
-    --accent:        #cf6739;
-    --accent-glow:   rgba(207, 103, 57, 0.5);
-    --accent-vibrant: #da7756;
+    --accent:        #df7646;
+    --accent-glow:   rgba(223, 118, 70, 0.5);
+    --accent-vibrant: #eb8758;
 
     /* ── Secondary accent: warm sand ───────────────────────────── */
-    --cyan:          #c5a47e;
-    --cyan-glow:     rgba(197, 164, 126, 0.4);
-    --cyan-dim:      rgba(197, 164, 126, 0.12);
+    --cyan:          #d8b48f;
+    --cyan-glow:     rgba(216, 180, 143, 0.4);
+    --cyan-dim:      rgba(216, 180, 143, 0.15);
 
     /* ── Text ──────────────────────────────────────────────────── */
-    --text:           #e3ddd2;
-    --text-secondary: #9c9a96;
-    --text-dim:       #5a5855;
+    --text:           #f0ebe1;
+    --text-secondary: #a6a4a0;
+    --text-dim:       #686663;
 
     /* ── Status colors ─────────────────────────────────────────── */
-    --green:      #5fa87a;
-    --green-glow: rgba(95, 168, 122, 0.35);
-    --red:        #b05e5e;
-    --red-glow:   rgba(176, 94, 94, 0.35);
-    --yellow:     #c5943a;
-    --blue:       #6a96b5;
-    --orange:     #cf6739;
+    --green:      #6bc48d;
+    --green-glow: rgba(107, 196, 141, 0.4);
+    --red:        #c96b6b;
+    --red-glow:   rgba(201, 107, 107, 0.4);
+    --yellow:     #e0ad48;
+    --blue:       #7eb3d6;
+    --orange:     #df7646;
 
     /* ── Gradients ─────────────────────────────────────────────── */
-    --grad-accent: linear-gradient(135deg, var(--accent), var(--cyan));
-    --grad-card:   linear-gradient(135deg, rgba(207, 103, 57, 0.06), rgba(197, 164, 126, 0.03));
+    --grad-accent: linear-gradient(135deg, var(--accent-vibrant), var(--cyan));
+    --grad-card:   linear-gradient(135deg, rgba(223, 118, 70, 0.08), rgba(216, 180, 143, 0.04));
 
     /* ── Easing ────────────────────────────────────────────────── */
-    --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+    --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -130,16 +130,22 @@ button {
     overflow: hidden;
 }
 
-/* Warm subtle radial glows */
+/* Warm subtle radial glows with slow pulsing */
 .bg-mesh::before {
     content: '';
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 65% 45% at -5% 5%,  rgba(207, 103, 57, 0.09) 0%, transparent 60%),
-        radial-gradient(ellipse 55% 45% at 105% 95%, rgba(197, 164, 126, 0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 50% 50%,  rgba(207, 103, 57, 0.035) 0%, transparent 70%);
+        radial-gradient(circle 800px at 15% 15%,  rgba(223, 118, 70, 0.12) 0%, transparent 80%),
+        radial-gradient(circle 600px at 85% 85%, rgba(216, 180, 143, 0.08) 0%, transparent 80%),
+        radial-gradient(circle 400px at 50% 50%,  rgba(223, 118, 70, 0.04) 0%, transparent 70%);
     pointer-events: none;
+    animation: pulseGlow 8s var(--ease) infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0%   { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
 }
 
 /* Subtle warm grid lines */
@@ -148,16 +154,18 @@ button {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-    background-size: 52px 52px;
-    animation: gridPan 80s linear infinite;
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridPan 100s linear infinite;
     pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
 }
 
 @keyframes gridPan {
     0%   { background-position: 0 0; }
-    100% { background-position: 52px 52px; }
+    100% { background-position: 50px 50px; }
 }
 
 .mesh-orb {
@@ -169,7 +177,16 @@ button {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(180%);
+    transition: all 0.3s var(--ease);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.glass-card:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-bright);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 /* ── Glow text utility ─────────────────────────────────────────────────── */
