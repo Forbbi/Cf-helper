@@ -1,9 +1,11 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
+from pydantic import BaseModel
 import database
 import cf_client
-from models import Bookmark, BookmarkCreate, UserInfo, Problem, ProblemWithStatus, Submission
+from models import Bookmark, BookmarkCreate, UserInfo, Problem, ProblemWithStatus, Submission, UserCreate, User, AuthToken
+from auth import verify_google_token, create_access_token, get_current_user, get_current_user_optional
 
 app = FastAPI(title="CF Tracker API", version="1.0.0")
 
@@ -17,12 +19,46 @@ app.add_middleware(
 
 database.init_db()
 
+class GoogleToken(BaseModel):
+    token: str
+
+@app.post("/api/auth/google", response_model=AuthToken)
+def login_with_google(data: GoogleToken):
+    try:
+        idinfo = verify_google_token(data.token)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    google_id = idinfo['sub']
+    user = database.get_user_by_google_id(google_id)
+    if not user:
+        user_create = UserCreate(
+            google_id=google_id,
+            email=idinfo.get('email', ''),
+            name=idinfo.get('name', ''),
+            picture=idinfo.get('picture', '')
+        )
+        user = database.create_user(user_create)
+
+    token = create_access_token(user.id)
+    return AuthToken(access_token=token)
+
+@app.get("/api/me", response_model=User)
+def get_me(user: User = Depends(get_current_user)):
+    return user
+
+class HandleUpdate(BaseModel):
+    handle: str
+
+@app.post("/api/me/handle", response_model=User)
+def update_handle(data: HandleUpdate, user: User = Depends(get_current_user)):
+    user = database.update_user_handle(user.id, data.handle)
+    return user
 
 @app.get("/api/config")
 def get_config():
     """Return server-side defaults (default handle from .env)."""
     return {"default_handle": cf_client.CF_DEFAULT_HANDLE}
-
 
 @app.get("/api/user/{handle}", response_model=UserInfo)
 async def get_user(handle: str):
@@ -32,7 +68,6 @@ async def get_user(handle: str):
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
-
 
 @app.get("/api/user/{handle}/solved")
 async def get_solved(handle: str):
@@ -45,7 +80,6 @@ async def get_solved(handle: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
 
-
 @app.get("/api/user/{handle}/submissions", response_model=List[Submission])
 async def get_submissions(handle: str):
     """Returns all submissions for the user with problem metadata."""
@@ -56,7 +90,6 @@ async def get_submissions(handle: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
 
-
 @app.get("/api/problems", response_model=List[ProblemWithStatus])
 async def get_problems(
     handle: Optional[str] = Query(None),
@@ -65,6 +98,7 @@ async def get_problems(
     max_rating: Optional[int] = Query(None),
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=500),
+    user: Optional[User] = Depends(get_current_user_optional)
 ):
     tag_list = [t.strip() for t in tags.split(",")] if tags else None
     try:
@@ -74,7 +108,6 @@ async def get_problems(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
 
-    # Get solved set if handle provided
     solved_set = set()
     if handle:
         try:
@@ -83,13 +116,13 @@ async def get_problems(
         except Exception:
             pass
 
-    # Get bookmarked set
-    bookmarked_ids = {f"{cid}_{idx}" for cid, idx in database.get_bookmarked_ids()}
+    bookmarked_ids = set()
+    if user:
+        raw_bm = database.get_bookmarked_ids(user.id)
+        bookmarked_ids = {f"{cid}_{idx}" for cid, idx in raw_bm}
 
-    # Sort by rating ascending (None goes last)
     problems.sort(key=lambda p: (p.rating is None, p.rating or 0))
 
-    # Paginate
     start = (page - 1) * page_size
     end = start + page_size
     page_problems = problems[start:end]
@@ -106,7 +139,6 @@ async def get_problems(
         )
     return result
 
-
 @app.get("/api/problems/count")
 async def get_problems_count(
     tags: Optional[str] = Query(None),
@@ -122,7 +154,6 @@ async def get_problems_count(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
 
-
 @app.get("/api/tags")
 async def get_tags():
     try:
@@ -131,20 +162,17 @@ async def get_tags():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
 
-
 @app.get("/api/bookmarks", response_model=List[Bookmark])
-def get_bookmarks():
-    return database.get_bookmarks()
-
+def get_bookmarks(user: User = Depends(get_current_user)):
+    return database.get_bookmarks(user.id)
 
 @app.post("/api/bookmarks", response_model=Bookmark, status_code=201)
-def create_bookmark(bm: BookmarkCreate):
-    return database.add_bookmark(bm)
-
+def create_bookmark(bm: BookmarkCreate, user: User = Depends(get_current_user)):
+    return database.add_bookmark(user.id, bm)
 
 @app.delete("/api/bookmarks/{contest_id}/{index}")
-def delete_bookmark(contest_id: int, index: str):
-    removed = database.remove_bookmark(contest_id, index)
+def delete_bookmark(contest_id: int, index: str, user: User = Depends(get_current_user)):
+    removed = database.remove_bookmark(user.id, contest_id, index)
     if not removed:
         raise HTTPException(status_code=404, detail="Bookmark not found")
     return {"status": "deleted"}

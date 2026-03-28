@@ -3,6 +3,27 @@ from typing import List, Optional, Any
 from datetime import datetime
 
 
+class UserBase(BaseModel):
+    email: str
+    name: str
+    picture: Optional[str] = None
+    cf_handle: Optional[str] = None
+
+class UserCreate(UserBase):
+    google_id: str
+
+class User(UserBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class AuthToken(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
 class UserInfo(BaseModel):
     handle: str
     rating: Optional[int] = None
@@ -39,6 +60,7 @@ class BookmarkCreate(BaseModel):
 
 class Bookmark(BookmarkCreate):
     id: int
+    user_id: int
     created_at: datetime
 
     class Config:

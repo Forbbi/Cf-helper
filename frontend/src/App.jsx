@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AppProvider } from './context/AppContext';
 import { ProblemsProvider } from './context/ProblemsContext';
+import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProblemsPage from './pages/ProblemsPage';
 import BookmarksPage from './pages/BookmarksPage';
@@ -24,32 +25,34 @@ export default function App() {
     const [activePage, setActivePage] = useState('problems');
 
     return (
-        <AppProvider>
-            <ProblemsProvider>
-                <div className="app">
-                    <div className="bg-mesh">
-                        <div className="mesh-orb orb-1"></div>
-                        <div className="mesh-orb orb-2"></div>
-                        <div className="mesh-orb orb-3"></div>
+        <AuthProvider>
+            <AppProvider>
+                <ProblemsProvider>
+                    <div className="app">
+                        <div className="bg-mesh">
+                            <div className="mesh-orb orb-1"></div>
+                            <div className="mesh-orb orb-2"></div>
+                            <div className="mesh-orb orb-3"></div>
+                        </div>
+                        <Navbar activePage={activePage} onNavigate={setActivePage} />
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activePage}
+                                className="app-content"
+                                initial="initial"
+                                animate="in"
+                                exit="out"
+                                variants={pageVariants}
+                                transition={pageTransition}
+                            >
+                                {activePage === 'problems' && <ProblemsPage />}
+                                {activePage === 'bookmarks' && <BookmarksPage />}
+                                {activePage === 'submissions' && <SubmissionsPage />}
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
-                    <Navbar activePage={activePage} onNavigate={setActivePage} />
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={activePage}
-                            className="app-content"
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                        >
-                            {activePage === 'problems' && <ProblemsPage />}
-                            {activePage === 'bookmarks' && <BookmarksPage />}
-                            {activePage === 'submissions' && <SubmissionsPage />}
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
-            </ProblemsProvider>
-        </AppProvider>
+                </ProblemsProvider>
+            </AppProvider>
+        </AuthProvider>
     );
 }

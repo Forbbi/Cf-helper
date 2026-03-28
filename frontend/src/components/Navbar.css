@@ -58,6 +58,7 @@
 .navbar-title .accent {
   background: linear-gradient(135deg, var(--accent-vibrant) 0%, var(--cyan) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -250,4 +251,72 @@
   text-transform: capitalize;
   font-weight: 500;
   color: var(--text-secondary);
+}
+
+/* ── Auth Section ──────────────────────────────────────────────────────── */
+.auth-section {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(20, 20, 22, 0.6);
+  padding: 6px 14px 6px 6px;
+  border-radius: 40px;
+  border: 1px solid var(--border);
+  transition: all 0.3s var(--ease);
+}
+
+.user-profile-menu:hover {
+  background: rgba(30, 30, 34, 0.8);
+  border-color: rgba(223, 118, 70, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.auth-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.auth-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.logout-btn {
+  background: rgba(255, 87, 87, 0.1);
+  color: #ff7676;
+  border: 1px solid rgba(255, 87, 87, 0.2);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  margin-left: 2px;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 87, 87, 0.2);
+  color: #ff9e9e;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 87, 87, 0.15);
+}
+
+.google-login-btn-container {
+  display: flex;
+  align-items: center;
+  transform: scale(0.95);
+  transform-origin: right center;
 }
