@@ -22,13 +22,20 @@ def verify_google_token(token: str) -> dict:
     if not GOOGLE_CLIENT_ID:
         # Fallback for local testing without proper Google Client ID
         # Only use if explicitly wanting to bypass Google verification in dev
-        print("WARNING: GOOGLE_CLIENT_ID not set. Authentication might fail.")
+        print("WARNING: GOOGLE_CLIENT_ID not set. Authentication might fail locally.")
+    
+    print(f"[AUTH] Verifying Google token. Client ID: {GOOGLE_CLIENT_ID[:10]}...")
     try:
         # Verify the token with Google
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
+        print(f"[AUTH] Google token verified. User: {idinfo.get('email')}")
         return idinfo
     except ValueError as e:
+        print(f"[AUTH ERROR] Invalid Google token: {str(e)}")
         raise ValueError(f"Invalid Google token: {str(e)}")
+    except Exception as e:
+        print(f"[AUTH ERROR] Unexpected verification error: {type(e).__name__}: {str(e)}")
+        raise ValueError(f"Google token verification failed: {str(e)}")
 
 def create_access_token(user_id: int) -> str:
     expiration = datetime.utcnow() + timedelta(days=7)

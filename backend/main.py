@@ -11,7 +11,12 @@ app = FastAPI(title="CF Tracker API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+        "http://35.229.93.108.nip.io:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -24,9 +29,11 @@ class GoogleToken(BaseModel):
 
 @app.post("/api/auth/google", response_model=AuthToken)
 def login_with_google(data: GoogleToken):
+    print(f"[BACKEND] Received login request for token: {data.token[:15]}...")
     try:
         idinfo = verify_google_token(data.token)
     except Exception as e:
+        print(f"[BACKEND ERROR] Authentication failed: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
     
     google_id = idinfo['sub']

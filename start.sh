@@ -10,17 +10,12 @@ echo "  CFTracker — starting backend + frontend"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # ── Backend ────────────────────────────────────────────────────────────────────
-if [ ! -d "$BACKEND/venv" ]; then
-    echo "⚙  Creating Python virtual environment..."
-    python3 -m venv "$BACKEND/venv"
-fi
-
-echo "📦 Installing backend dependencies..."
-"$BACKEND/venv/bin/pip" install -r "$BACKEND/requirements.txt" -q
+echo "📦 Installing backend dependencies with uv..."
+uv sync -q
 
 echo "🚀 Starting backend on http://localhost:8000"
 cd "$BACKEND"
-"$BACKEND/venv/bin/python" -m uvicorn main:app --port 8000 &
+uv run python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
 BACKEND_PID=$!
 
 # ── Frontend ───────────────────────────────────────────────────────────────────
@@ -32,7 +27,7 @@ if [ ! -d "$FRONTEND/node_modules" ]; then
 fi
 
 echo "🚀 Starting frontend on http://localhost:5173"
-npm run dev &
+npm run dev -- --host &
 FRONTEND_PID=$!
 
 # ── Summary ────────────────────────────────────────────────────────────────────

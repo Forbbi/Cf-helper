@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
-import { getUser, getSolved, getBookmarks, addBookmark, removeBookmark } from '../services/api';
+import { getUser, getSolved, getBookmarks, addBookmark, removeBookmark, API_BASE } from '../services/api';
 import axios from 'axios';
 
 const AppContext = createContext(null);
@@ -44,7 +44,7 @@ export function AppProvider({ children }) {
         if (saved) {
             loadUser(saved);
         } else {
-            axios.get('http://localhost:8000/api/config').then(r => {
+            axios.get(`${API_BASE}/api/config`).then(r => {
                 const defaultHandle = r.data.default_handle;
                 if (defaultHandle) {
                     setHandle(defaultHandle);
