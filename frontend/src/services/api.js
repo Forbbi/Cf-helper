@@ -34,3 +34,5 @@ export const getProblemsCount = (params) => fetchWithCache(`probCount_${JSON.str
 export const getBookmarks = () => api.get('/api/bookmarks').then(r => r.data);
 export const addBookmark = (bm) => api.post('/api/bookmarks', bm).then(r => r.data);
 export const removeBookmark = (contestId, index) => api.delete(`/api/bookmarks/${contestId}/${index}`).then(r => r.data);
+
+export const getContests = () => api.get('/api/contests').then(r => r.data);

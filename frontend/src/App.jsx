@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import ProblemsPage from './pages/ProblemsPage';
 import BookmarksPage from './pages/BookmarksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
+import ContestsPage from './pages/ContestsPage';
 import './App.css';
 
 const pageVariants = {
@@ -48,6 +49,7 @@ export default function App() {
                                 {activePage === 'problems' && <ProblemsPage />}
                                 {activePage === 'bookmarks' && <BookmarksPage />}
                                 {activePage === 'submissions' && <SubmissionsPage />}
+                                {activePage === 'contests' && <ContestsPage />}
                             </motion.div>
                         </AnimatePresence>
                     </div>

@@ -82,3 +82,14 @@ class Submission(BaseModel):
     time_seconds: int
     language: Optional[str] = None
     problem: SubmissionProblem
+
+
+class Contest(BaseModel):
+    id: int
+    name: str
+    type: str # CF, ICPC
+    phase: str # BEFORE, CODING, PENDING_SYSTEM_TEST, SYSTEM_TEST, FINISHED
+    frozen: bool
+    duration_seconds: int
+    start_time_seconds: Optional[int] = None
+    relative_time_seconds: Optional[int] = None

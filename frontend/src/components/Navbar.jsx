@@ -91,6 +91,12 @@ export default function Navbar({ activePage, onNavigate }) {
                 >
                     Submissions
                 </button>
+                <button
+                    className={`nav-link ${activePage === 'contests' ? 'active' : ''}`}
+                    onClick={() => onNavigate('contests')}
+                >
+                    Contests
+                </button>
             </div>
 
             <form className="handle-form" onSubmit={handleSubmit}>

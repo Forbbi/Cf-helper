@@ -16,7 +16,7 @@ from typing import Dict, List, Optional, Set, Tuple
 import requests
 from dotenv import load_dotenv
 
-from models import UserInfo, Problem, Submission, SubmissionProblem
+from models import UserInfo, Problem, Submission, SubmissionProblem, Contest
 
 load_dotenv()
 
@@ -35,6 +35,10 @@ PROBLEMSET_TTL = 10 * 60  # 10 min
 _solved_cache: Dict[str, object] = {}       # handle → {data, ts}
 SOLVED_TTL = 5 * 60  # 5 min
 
+# Cache contests for 1 hour.
+_contest_cache: Dict[str, object] = {}
+CONTEST_TTL = 60 * 60  # 1 hour
+
 
 async def _run(fn, *args, **kwargs):
     loop = asyncio.get_event_loop()
@@ -42,6 +46,23 @@ async def _run(fn, *args, **kwargs):
 
 
 # ─── Raw API helpers (sync) ──────────────────────────────────────────────────
+
+def _get_contests_sync():
+    """Fetch all contests and return the raw result."""
+    # Use cache if available
+    entry = _contest_cache.get("all")
+    if entry and time.time() - entry["ts"] < CONTEST_TTL:
+        return entry["data"]
+
+    url = "https://codeforces.com/api/contest.list?gym=false"
+    r = requests.get(url, timeout=30)
+    r.raise_for_status()
+    data = r.json()
+    if data["status"] != "OK":
+        raise ValueError(data.get("comment", "Unknown error"))
+    
+    _contest_cache["all"] = {"data": data["result"], "ts": time.time()}
+    return data["result"]
 
 def _get_user_info_sync(handle: str):
     url = f"https://codeforces.com/api/user.info?handles={handle}"
@@ -262,3 +283,49 @@ async def get_user_submissions(handle: str) -> List[Submission]:
             )
         )
     return result
+
+
+async def get_upcoming_contests() -> List[Contest]:
+    """Returns contests where phase is BEFORE or CODING."""
+    raw = await _run(_get_contests_sync)
+    result = []
+    for c in raw:
+        if c.get("phase") in ("BEFORE", "CODING"):
+            result.append(
+                Contest(
+                    id=c.get("id"),
+                    name=c.get("name"),
+                    type=c.get("type"),
+                    phase=c.get("phase"),
+                    frozen=c.get("frozen"),
+                    duration_seconds=c.get("durationSeconds"),
+                    start_time_seconds=c.get("startTimeSeconds"),
+                    relative_time_seconds=c.get("relativeTimeSeconds"),
+                )
+            )
+    # Sort by start_time_seconds
+    result.sort(key=lambda x: x.start_time_seconds or 0)
+    return result
+
+
+async def get_recent_contests(count: int = 5) -> List[Contest]:
+    """Returns recently finished contests."""
+    raw = await _run(_get_contests_sync)
+    result = []
+    for c in raw:
+        if c.get("phase") == "FINISHED":
+            result.append(
+                Contest(
+                    id=c.get("id"),
+                    name=c.get("name"),
+                    type=c.get("type"),
+                    phase=c.get("phase"),
+                    frozen=c.get("frozen"),
+                    duration_seconds=c.get("durationSeconds"),
+                    start_time_seconds=c.get("startTimeSeconds"),
+                    relative_time_seconds=c.get("relativeTimeSeconds"),
+                )
+            )
+    # Sort by start_time_seconds descending
+    result.sort(key=lambda x: x.start_time_seconds or 0, reverse=True)
+    return result[:count]

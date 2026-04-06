@@ -4,7 +4,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 import database
 import cf_client
-from models import Bookmark, BookmarkCreate, UserInfo, Problem, ProblemWithStatus, Submission, UserCreate, User, AuthToken
+from models import Bookmark, BookmarkCreate, UserInfo, Problem, ProblemWithStatus, Submission, UserCreate, User, AuthToken, Contest
 from auth import verify_google_token, create_access_token, get_current_user, get_current_user_optional
 
 app = FastAPI(title="CF Tracker API", version="1.0.0")
@@ -183,3 +183,13 @@ def delete_bookmark(contest_id: int, index: str, user: User = Depends(get_curren
     if not removed:
         raise HTTPException(status_code=404, detail="Bookmark not found")
     return {"status": "deleted"}
+
+@app.get("/api/contests", response_model=List[Contest])
+async def get_contests():
+    """Returns upcoming and recently finished contests."""
+    try:
+        upcoming = await cf_client.get_upcoming_contests()
+        recent = await cf_client.get_recent_contests(count=10)
+        return upcoming + recent
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
