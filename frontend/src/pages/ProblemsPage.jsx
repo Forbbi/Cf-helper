@@ -1,18 +1,9 @@
 import { useState, useMemo, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import FilterPanel from '../components/FilterPanel';
 import ProblemRow from '../components/ProblemRow';
 import { useApp } from '../context/AppContext';
 import { useProblems } from '../context/ProblemsContext';
 import './ProblemsPage.css';
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.04 }
-    }
-};
 
 const SortIcon = ({ columnKey, sortConfig }) => {
     if (sortConfig.key !== columnKey) return <span className="sort-icon inactive">↕</span>;
@@ -133,21 +124,18 @@ export default function ProblemsPage() {
                 {error && <div className="error-state">⚠️ {error}</div>}
 
                 {!loading && !error && (
-                    <motion.div
+                    <div
                         key={page}
                         className="problems-list"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
                     >
                         {pageProblems.length === 0 ? (
                             <div className="empty-state">No problems match your filters.</div>
                         ) : (
-                            pageProblems.map(p => (
-                                <ProblemRow key={`${p.contest_id}_${p.index}`} problem={p} />
+                            pageProblems.map((p, i) => (
+                                <ProblemRow key={`${p.contest_id}_${p.index}`} problem={p} index={i} />
                             ))
                         )}
-                    </motion.div>
+                    </div>
                 )}
 
                 {!loading && totalPages > 1 && (

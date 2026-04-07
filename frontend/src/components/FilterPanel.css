@@ -73,7 +73,7 @@
 
 .rating-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 12px rgba(223, 118, 70, 0.25);
+    box-shadow: 0 0 0 2px rgba(200, 103, 58, 0.12);
 }
 
 .rating-dash {
@@ -109,10 +109,9 @@
 }
 
 .preset-btn.active {
-    background: rgba(223, 118, 70, 0.15);
-    border-color: rgba(223, 118, 70, 0.5);
+    background: rgba(200, 103, 58, 0.1);
+    border-color: rgba(200, 103, 58, 0.35);
     color: var(--accent-vibrant);
-    box-shadow: 0 0 12px rgba(223, 118, 70, 0.2);
     transform: translateY(-1px);
 }
 
@@ -138,7 +137,7 @@
 
 .tag-search:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 12px rgba(223, 118, 70, 0.25);
+    box-shadow: 0 0 0 2px rgba(200, 103, 58, 0.12);
 }
 
 .tag-search::placeholder {

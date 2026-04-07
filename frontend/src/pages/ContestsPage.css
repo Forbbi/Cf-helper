@@ -16,6 +16,7 @@
     margin-bottom: 0.5rem;
     background: linear-gradient(135deg, #fff 0%, #a0a0c0 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.02em;
 }
@@ -87,8 +88,8 @@
 }
 
 .contest-card.ongoing {
-    border-color: rgba(0, 255, 136, 0.3);
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-color: rgba(90, 158, 117, 0.2);
+    background: linear-gradient(135deg, rgba(90, 158, 117, 0.05) 0%, rgba(255, 255, 255, 0.03) 100%);
 }
 
 .contest-badge {
@@ -104,10 +105,9 @@
 }
 
 .ongoing .contest-badge {
-    background: rgba(0, 255, 136, 0.15);
-    color: #4ade80;
-    border-color: rgba(0, 255, 136, 0.3);
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+    background: rgba(90, 158, 117, 0.12);
+    color: var(--green);
+    border-color: rgba(90, 158, 117, 0.3);
 }
 
 .contest-name {
@@ -155,14 +155,13 @@
 }
 
 .ongoing .register-btn {
-    background: #4ade80;
-    color: #052e16;
+    background: var(--green);
+    color: #0a1f0f;
     border: none;
 }
 
 .ongoing .register-btn:hover {
-    background: #22c55e;
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    background: #4a8a62;
 }
 
 /* Finished Contests Small Cards */
@@ -223,7 +222,8 @@
     width: 48px;
     height: 48px;
     border: 3px solid rgba(255, 255, 255, 0.1);
-    border-top: 3px solid #4ade80;
+    border-top: 3px solid var(--accent);
+    border-right-color: transparent;
     border-radius: 50%;
     animation: spin 1s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }

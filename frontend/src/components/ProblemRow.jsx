@@ -1,12 +1,6 @@
 import { memo } from 'react';
-import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 import './ProblemRow.css';
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
-};
 
 const ratingColor = (r) => {
     if (!r) return '#888';
@@ -30,7 +24,7 @@ const ratingLabel = (r) => {
     return 'GM+';
 };
 
-const ProblemRow = memo(function ProblemRow({ problem }) {
+const ProblemRow = memo(function ProblemRow({ problem, index = 0 }) {
     const { solvedSet, bookmarkedIds, bookmark, unbookmark } = useApp();
     const key = `${problem.contest_id}_${problem.index}`;
     const isSolved = solvedSet.has(key);
@@ -43,7 +37,10 @@ const ProblemRow = memo(function ProblemRow({ problem }) {
     };
 
     return (
-        <motion.div variants={itemVariants} className={`problem-row ${isSolved ? 'solved' : ''}`}>
+        <div 
+            className={`problem-row ${isSolved ? 'solved' : ''}`}
+            style={{ animationDelay: `${Math.min(index * 0.02, 0.5)}s` }}
+        >
             <div className="problem-status">
                 {isSolved ? (
                     <span className="status-icon solved" title="Solved">✓</span>
@@ -104,7 +101,7 @@ const ProblemRow = memo(function ProblemRow({ problem }) {
                     {isBookmarked ? '★' : '☆'}
                 </button>
             </div>
-        </motion.div>
+        </div>
     );
 });
 

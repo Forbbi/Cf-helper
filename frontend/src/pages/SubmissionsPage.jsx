@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 import { getSubmissions } from '../services/api';
+import { NoteButton } from '../components/NoteModal';
 import './SubmissionsPage.css';
 
 const VERDICT_LABEL = {
@@ -14,19 +14,6 @@ const VERDICT_LABEL = {
     CHALLENGED: 'Hacked',
     SKIPPED: 'Skipped',
     PARTIAL: 'Partial',
-};
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.02 }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0 }
 };
 
 const ratingColor = (r) => {
@@ -414,6 +401,10 @@ export default function SubmissionsPage() {
                                                                 : bookmark({ contest_id: p.contest_id, index: p.index, name: p.name, rating: p.rating, tags: p.tags, url: p.url })
                                                             }
                                                         >{isBookmarked ? '★' : '☆'}</button>
+                                                        <NoteButton
+                                                            problemKey={`${p.contest_id}_${p.index}`}
+                                                            problemName={p.name}
+                                                        />
                                                     </div>
                                                     <a href={p.url} target="_blank" rel="noopener noreferrer" className="stuck-name">{p.name}</a>
                                                     <div className="stuck-tags">
@@ -460,20 +451,21 @@ export default function SubmissionsPage() {
                             <div className="sth-time sortable-header" onClick={() => handleSort('time_seconds')}>
                                 When <SortIcon columnKey="time_seconds" sortConfig={sortConfig} />
                             </div>
+                            <div className="sth-note"></div>
                             <div className="sth-bm"></div>
                         </div>
 
-                        <motion.div className="sub-table-body" variants={containerVariants} initial="hidden" animate="visible" key={page}>
+                        <div className="sub-table-body" key={page}>
                             {paginated.length === 0 ? (
                                 <div className="sub-empty-row">No submissions match filters.</div>
                             ) : (
-                                paginated.map(sub => {
+                                paginated.map((sub, i) => {
                                     const isAC = sub.verdict === 'OK';
                                     const verdictLabel = VERDICT_LABEL[sub.verdict] || sub.verdict || '—';
                                     const key = `${sub.problem.contest_id}_${sub.problem.index}`;
                                     const isBookmarked = bookmarkedIds?.has(key);
                                     return (
-                                        <motion.div variants={itemVariants} key={sub.id} className={`sub-row ${isAC ? 'ac' : 'wa'}`}>
+                                        <div key={sub.id} className={`sub-row ${isAC ? 'ac' : 'wa'}`} style={{ animationDelay: `${Math.min(i * 0.02, 0.5)}s` }}>
                                             <div className="sth-verdict">
                                                 <span className={`verdict-badge ${isAC ? 'ac' : 'wa'}`}>
                                                     {isAC ? '✓' : '✗'} {verdictLabel}
@@ -497,6 +489,12 @@ export default function SubmissionsPage() {
                                             <div className="sth-time">
                                                 <span className="time-ago">{timeAgo(sub.time_seconds)}</span>
                                             </div>
+                                            <div className="sth-note">
+                                                <NoteButton
+                                                    problemKey={`${sub.problem.contest_id}_${sub.problem.index}`}
+                                                    problemName={sub.problem.name}
+                                                />
+                                            </div>
                                             <div className="sth-bm">
                                                 <button
                                                     className={`bm-star-btn ${isBookmarked ? 'bookmarked' : ''}`}
@@ -507,11 +505,11 @@ export default function SubmissionsPage() {
                                                     }
                                                 >{isBookmarked ? '★' : '☆'}</button>
                                             </div>
-                                        </motion.div>
+                                        </div>
                                     );
                                 })
                             )}
-                        </motion.div>
+                        </div>
 
                         {totalPages > 1 && (
                             <div className="sub-pagination">

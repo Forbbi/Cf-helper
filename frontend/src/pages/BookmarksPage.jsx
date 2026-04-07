@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
+import { NoteButton } from '../components/NoteModal';
 import './BookmarksPage.css';
 
 const ratingColor = (r) => {
@@ -12,19 +12,6 @@ const ratingColor = (r) => {
     if (r < 2400) return '#c084fc';
     if (r < 3000) return '#fb923c';
     return '#f87171';
-};
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.04 }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0 }
 };
 
 function timeAgo(dateStr) {
@@ -110,19 +97,20 @@ export default function BookmarksPage() {
                 <div className="bmth-when sortable-header" onClick={() => handleSort('created_at')}>
                     Saved <SortIcon columnKey="created_at" sortConfig={sortConfig} />
                 </div>
+                <div className="bmth-note"></div>
                 <div className="bmth-remove"></div>
             </div>
 
             {/* Table Body */}
-            <motion.div className="bm-table-body" variants={containerVariants} initial="hidden" animate="visible">
+            <div className="bm-table-body">
                 {sortedBookmarks.map((bm, i) => {
                     const key = `${bm.contest_id}_${bm.index}`;
                     const isSolved = solvedSet.has(key);
                     return (
-                        <motion.div
+                        <div
                             key={bm.id}
-                            variants={itemVariants}
                             className={`bm-row ${isSolved ? 'solved' : ''}`}
+                            style={{ animationDelay: `${Math.min(i * 0.04, 1)}s` }}
                         >
                             {/* Problem */}
                             <div className="bmth-problem">
@@ -166,6 +154,14 @@ export default function BookmarksPage() {
                                 <span className="bm-time">{timeAgo(bm.created_at)}</span>
                             </div>
 
+                            {/* Note */}
+                            <div className="bmth-note">
+                                <NoteButton
+                                    problemKey={`${bm.contest_id}_${bm.index}`}
+                                    problemName={bm.name}
+                                />
+                            </div>
+
                             {/* Remove */}
                             <div className="bmth-remove">
                                 <button
@@ -176,10 +172,10 @@ export default function BookmarksPage() {
                                     ★
                                 </button>
                             </div>
-                        </motion.div>
+                        </div>
                     );
                 })}
-            </motion.div>
+            </div>
         </div>
     );
 }

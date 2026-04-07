@@ -126,7 +126,7 @@
 }
 
 .handle-input-wrap:focus-within {
-  box-shadow: 0 0 0 1px var(--accent), 0 0 16px rgba(223, 118, 70, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 12px rgba(0, 0, 0, 0.4);
   transform: translateY(-1px);
 }
 
@@ -216,10 +216,9 @@
 }
 
 .user-pill:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   border-color: var(--border-bright);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(223, 118, 70, 0.2);
+  transform: translateY(-1px);
 }
 
 .user-avatar {
@@ -308,10 +307,9 @@
 }
 
 .logout-btn:hover {
-  background: rgba(255, 87, 87, 0.2);
-  color: #ff9e9e;
+  background: rgba(168, 87, 87, 0.15);
+  color: var(--red);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(255, 87, 87, 0.15);
 }
 
 .google-login-btn-container {

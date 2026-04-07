@@ -37,7 +37,7 @@
 .bm-table-header,
 .bm-row {
     display: grid;
-    grid-template-columns: 1fr 90px 280px 90px 44px;
+    grid-template-columns: 1fr 90px 280px 90px 36px 44px;
     gap: 0.5rem;
     align-items: center;
     padding: 0.6rem 1.1rem;
@@ -115,7 +115,7 @@
 }
 
 .bm-row.solved {
-    border-left: 2px solid rgba(95, 168, 122, 0.45);
+    border-left: 2px solid rgba(90, 158, 117, 0.35);
 }
 
 /* ── Problem cell ────────────────────────────────────────────────────────── */
@@ -220,16 +220,20 @@
     font-size: 1rem;
     cursor: pointer;
     color: var(--yellow);
-    transition: color 0.2s, transform 0.2s var(--ease-spring), text-shadow 0.2s;
+    transition: color 0.2s, transform 0.2s var(--ease-spring);
     padding: 2px;
     line-height: 1;
-    text-shadow: 0 0 8px rgba(251, 191, 36, 0.45);
 }
 
 .bm-remove-btn:hover {
     color: var(--red);
-    transform: scale(1.25) rotate(-15deg);
-    text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+    transform: scale(1.2) rotate(-12deg);
+}
+
+/* ── Note column ─────────────────────────────────────────────────────────── */
+.bmth-note {
+    display: flex;
+    justify-content: center;
 }
 
 /* ── Empty State ─────────────────────────────────────────────────────────── */

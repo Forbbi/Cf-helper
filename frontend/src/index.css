@@ -13,41 +13,41 @@
     --bg:           #0f0f0d;
     --bg-depth:     #0a0a09;
     --surface:      rgba(255, 255, 255, 0.03);
-    --surface-hover: rgba(255, 255, 255, 0.08);
+    --surface-hover: rgba(255, 255, 255, 0.06);
     --glass:        rgba(15, 15, 13, 0.85);
 
     /* ── Borders ───────────────────────────────────────────────── */
-    --border:        rgba(255, 255, 255, 0.06);
-    --border-bright: rgba(255, 255, 255, 0.15);
-    --border-glow:   rgba(218, 119, 86, 0.35);
+    --border:        rgba(255, 255, 255, 0.07);
+    --border-bright: rgba(255, 255, 255, 0.14);
+    --border-glow:   rgba(218, 119, 86, 0.18);
 
-    /* ── Primary accent: Claude coral/terracotta ─────────────── */
-    --accent:        #df7646;
-    --accent-glow:   rgba(223, 118, 70, 0.5);
-    --accent-vibrant: #eb8758;
+    /* ── Primary accent: warm terracotta ────────────────────────── */
+    --accent:        #c8673a;
+    --accent-glow:   rgba(200, 103, 58, 0.15);
+    --accent-vibrant: #d9774e;
 
     /* ── Secondary accent: warm sand ───────────────────────────── */
-    --cyan:          #d8b48f;
-    --cyan-glow:     rgba(216, 180, 143, 0.4);
-    --cyan-dim:      rgba(216, 180, 143, 0.15);
+    --cyan:          #c4a07a;
+    --cyan-glow:     rgba(196, 160, 122, 0.12);
+    --cyan-dim:      rgba(196, 160, 122, 0.12);
 
     /* ── Text ──────────────────────────────────────────────────── */
-    --text:           #f0ebe1;
-    --text-secondary: #a6a4a0;
-    --text-dim:       #686663;
+    --text:           #ede8de;
+    --text-secondary: #9a9895;
+    --text-dim:       #5e5c59;
 
-    /* ── Status colors ─────────────────────────────────────────── */
-    --green:      #6bc48d;
-    --green-glow: rgba(107, 196, 141, 0.4);
-    --red:        #c96b6b;
-    --red-glow:   rgba(201, 107, 107, 0.4);
-    --yellow:     #e0ad48;
-    --blue:       #7eb3d6;
-    --orange:     #df7646;
+    /* ── Status colors: desaturated, professional ───────────────── */
+    --green:      #5a9e75;
+    --green-glow: rgba(90, 158, 117, 0.1);
+    --red:        #a85757;
+    --red-glow:   rgba(168, 87, 87, 0.1);
+    --yellow:     #b8903a;
+    --blue:       #6a95b0;
+    --orange:     #c8673a;
 
     /* ── Gradients ─────────────────────────────────────────────── */
     --grad-accent: linear-gradient(135deg, var(--accent-vibrant), var(--cyan));
-    --grad-card:   linear-gradient(135deg, rgba(223, 118, 70, 0.08), rgba(216, 180, 143, 0.04));
+    --grad-card:   linear-gradient(135deg, rgba(200, 103, 58, 0.06), rgba(196, 160, 122, 0.03));
 
     /* ── Easing ────────────────────────────────────────────────── */
     --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -130,22 +130,22 @@ button {
     overflow: hidden;
 }
 
-/* Warm subtle radial glows with slow pulsing */
+/* Subtle warm radial tints */
 .bg-mesh::before {
     content: '';
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle 800px at 15% 15%,  rgba(223, 118, 70, 0.12) 0%, transparent 80%),
-        radial-gradient(circle 600px at 85% 85%, rgba(216, 180, 143, 0.08) 0%, transparent 80%),
-        radial-gradient(circle 400px at 50% 50%,  rgba(223, 118, 70, 0.04) 0%, transparent 70%);
+        radial-gradient(circle 800px at 15% 15%,  rgba(200, 103, 58, 0.06) 0%, transparent 80%),
+        radial-gradient(circle 600px at 85% 85%, rgba(196, 160, 122, 0.04) 0%, transparent 80%),
+        radial-gradient(circle 400px at 50% 50%,  rgba(200, 103, 58, 0.02) 0%, transparent 70%);
     pointer-events: none;
-    animation: pulseGlow 8s var(--ease) infinite alternate;
+    animation: pulseGlow 10s var(--ease) infinite alternate;
 }
 
 @keyframes pulseGlow {
-    0%   { opacity: 0.8; transform: scale(1); }
-    100% { opacity: 1; transform: scale(1.05); }
+    0%   { opacity: 0.85; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.03); }
 }
 
 /* Subtle warm grid lines */
@@ -202,8 +202,8 @@ button {
     width: 20px;
     height: 20px;
     border: 2px solid rgba(255, 255, 255, 0.07);
-    border-top-color:  var(--accent);
-    border-right-color: var(--cyan);
+    border-top-color: var(--accent);
+    border-right-color: transparent;
     border-radius: 50%;
     animation: spin 0.75s linear infinite;
     will-change: transform;
