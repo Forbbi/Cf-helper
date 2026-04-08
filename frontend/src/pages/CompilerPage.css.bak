@@ -1,0 +1,295 @@
+.compiler-page {
+    max-width: 1400px; /* Increased from 1300px */
+    margin: 0 auto;
+    padding: 24px 28px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* ... */
+.compiler-body {
+    display: grid;
+    grid-template-columns: 1fr 280px; /* Give side panel bit more width too, keeping 1fr dominant */
+    gap: 20px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .compiler-body { grid-template-columns: 1fr; }
+}
+
+/* ── Left ────────────────────────────────────────────────────────── */
+.compiler-left {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ── Editor ──────────────────────────────────────────────────────── */
+.editor-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0e0e0d;
+}
+
+.editor-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.025);
+    border-bottom: 1px solid var(--border);
+}
+
+.editor-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+}
+
+.editor-clear {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s;
+    padding: 0;
+}
+.editor-clear:hover { color: var(--red); }
+
+.editor-inner {
+    display: flex;
+    max-height: calc(100vh - 350px);
+    overflow: auto;
+}
+
+.line-numbers {
+    display: flex;
+    flex-direction: column;
+    padding: 18px 16px 18px 18px;
+    background: rgba(255,255,255,0.015);
+    border-right: 1px solid var(--border);
+    user-select: none;
+    min-width: 52px;
+    text-align: right;
+}
+
+.line-numbers span {
+    font-size: 15px; /* Increased */
+    line-height: 1.7; /* Matches editor */
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.5;
+}
+
+.code-editor {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #d4d4d4;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 16px; /* Larger font */
+    line-height: 1.7;
+    padding: 18px 24px;
+    resize: none;
+    tab-size: 4;
+    min-height: 600px; /* Taller editor */
+    height: calc(100vh - 350px); /* Fill most of the screen */
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-x: auto;
+}
+
+/* ── Output ──────────────────────────────────────────────────────── */
+.output-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0e0e0d;
+}
+
+.output-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.025);
+    border-bottom: 1px solid var(--border);
+}
+
+.output-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+}
+
+.output-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.status-badge {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.status-badge.ok {
+    color: var(--green);
+    background: rgba(106, 170, 132, 0.1);
+    border: 1px solid rgba(106, 170, 132, 0.22);
+}
+
+.status-badge.err {
+    color: var(--red);
+    background: rgba(192, 96, 96, 0.08);
+    border: 1px solid rgba(192, 96, 96, 0.2);
+}
+
+.meta-item {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.output-content {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    padding: 14px 16px;
+    margin: 0;
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #d4d4d4;
+}
+
+.output-content.has-error { color: var(--red); }
+.output-error { color: var(--red); }
+.output-running { color: var(--text-secondary); font-style: italic; }
+.output-placeholder { color: var(--text-dim); font-style: italic; font-size: 12px; opacity: 0.5; }
+
+/* ── Right ───────────────────────────────────────────────────────── */
+.compiler-right {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ── Stdin ───────────────────────────────────────────────────────── */
+.stdin-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0e0e0d;
+}
+
+.stdin-bar {
+    padding: 8px 14px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    background: rgba(255,255,255,0.025);
+    border-bottom: 1px solid var(--border);
+}
+
+.stdin-editor {
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #d4d4d4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.6;
+    padding: 14px 16px;
+    resize: none;
+    min-height: 150px;
+}
+
+.stdin-editor::placeholder {
+    color: var(--text-dim);
+    opacity: 0.5;
+    font-style: italic;
+}
+
+/* ── Tips ────────────────────────────────────────────────────────── */
+.compiler-tips {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tips-header {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-dim);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.tips-list li {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.tip-key {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+}
+
+.tips-note {
+    font-size: 10px;
+    color: var(--text-dim);
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+}
+
+.tips-note a {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.tips-note a:hover { color: var(--text); }

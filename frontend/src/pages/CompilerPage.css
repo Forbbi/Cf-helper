@@ -1,0 +1,251 @@
+.compiler-page {
+    width: 100%;
+    max-width: 1800px; /* Expands to full screen on huge monitors */
+    margin: 0 auto;
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: calc(100vh - 80px); /* 100vh minus navbar/margin approx */
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+.compiler-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.compiler-subtitle {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+}
+
+.compiler-run-wrap {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.run-hint {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Body Layout ─────────────────────────────────────────────────── */
+.compiler-body {
+    display: grid;
+    /* Ratio: Left Input/Output (mini), Right Editor (maxi) */
+    grid-template-columns: 350px 1fr; 
+    gap: 16px;
+    flex: 1; /* Stretch to fill container height */
+    min-height: 0; /* Important for deeply nested flex children to truncate */
+}
+
+@media (max-width: 1000px) {
+    .compiler-body { grid-template-columns: 1fr; }
+}
+
+.compiler-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+}
+
+/* ── Shared Panel Bars ───────────────────────────────────────────── */
+.panel-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.025);
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-title {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+}
+
+.panel-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s;
+    padding: 2px 6px;
+}
+.action-btn:hover { color: var(--red); }
+
+.action-btn.action-run {
+    background: rgba(106, 170, 132, 0.15);
+    color: var(--green);
+    border: 1px solid rgba(106, 170, 132, 0.3);
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 4px 12px;
+}
+.action-btn.action-run:hover {
+    background: rgba(106, 170, 132, 0.25);
+}
+.action-btn.action-run:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* ── Panel Wrappers ──────────────────────────────────────────────── */
+.stdin-wrap,
+.output-wrap,
+.editor-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0e0e0d;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Flex-half splits the left pane 50/50 vertically */
+.flex-half {
+    flex: 1;
+    min-height: 200px; 
+}
+
+/* Editor wrap takes full height of right pane */
+.layout-right .editor-wrap {
+    height: 100%;
+}
+
+/* ── Input/Output specific ───────────────────────────────────────── */
+.stdin-editor {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #d4d4d4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.6;
+    padding: 14px 16px;
+    resize: none;
+}
+.stdin-editor::placeholder {
+    color: var(--text-dim);
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.output-content {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    padding: 14px 16px;
+    margin: 0;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #d4d4d4;
+    background: #090909;
+}
+.output-content.has-error { color: var(--red); }
+.output-error { color: var(--red); }
+.output-running { color: var(--text-secondary); font-style: italic; }
+.output-placeholder { color: var(--text-dim); font-style: italic; font-size: 12px; opacity: 0.5; }
+
+.status-badge {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+.status-badge.ok {
+    color: var(--green);
+    background: rgba(106, 170, 132, 0.1);
+    border: 1px solid rgba(106, 170, 132, 0.22);
+}
+.status-badge.err {
+    color: var(--red);
+    background: rgba(192, 96, 96, 0.08);
+    border: 1px solid rgba(192, 96, 96, 0.2);
+}
+.output-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.meta-item {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Editor specific ─────────────────────────────────────────────── */
+.editor-inner {
+    display: flex;
+    flex: 1;
+    overflow: hidden; /* Parent clips, kids scroll */
+}
+
+.line-numbers {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 14px;
+    background: rgba(255,255,255,0.015);
+    border-right: 1px solid var(--border);
+    user-select: none;
+    min-width: 52px;
+    text-align: right;
+    overflow: hidden; /* Syncs natively or functionally ignores scroll */
+}
+
+.line-numbers span {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.5;
+}
+
+.code-editor {
+    flex: 1;
+    background: #0e0e0d;
+    border: none;
+    outline: none;
+    color: #d4d4d4;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 16px;
+    line-height: 1.7;
+    padding: 16px 20px;
+    resize: none;
+    tab-size: 4;
+    box-sizing: border-box;
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-y: auto;
+    overflow-x: auto;
+}

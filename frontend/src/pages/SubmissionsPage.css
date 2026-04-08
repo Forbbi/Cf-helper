@@ -19,15 +19,12 @@
 }
 
 .page-title {
-    font-size: 26px;
-    font-weight: 900;
+    font-size: 14px;
+    font-weight: 400;
     color: var(--text);
     margin: 0;
-    font-family: 'Newsreader', Georgia, serif;
-    font-style: italic;
-    font-weight: 500;
-    color: var(--text);
-    letter-spacing: -0.3px;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
 }
 
 /* ─── Time Range Chips ───────────────────────────────────────────────────── */
@@ -58,9 +55,9 @@
 }
 
 .tr-chip.active {
-    background: rgba(200, 103, 58, 0.1);
-    border-color: rgba(200, 103, 58, 0.35);
-    color: var(--accent-vibrant);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-bright);
+    color: var(--text);
 }
 
 /* ─── Loading / Error / Empty ─────────────────────────────────────────────── */
@@ -94,8 +91,7 @@
 
 .sub-empty .empty-icon {
     font-size: 3.5rem;
-    opacity: 0.15;
-    filter: drop-shadow(0 0 20px var(--accent-glow));
+    opacity: 0.08;
 }
 
 .sub-empty h2 {
@@ -143,17 +139,17 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 3px;
-    border-radius: 0 3px 3px 0;
-    background: var(--accent);
+    width: 2px;
+    border-radius: 0 2px 2px 0;
+    background: rgba(255, 255, 255, 0.15);
     opacity: 0;
     transition: opacity 0.2s;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px color-mix(in srgb, var(--accent) 15%, transparent);
+    background: var(--surface-hover);
+    border-color: var(--border-bright);
+    transform: translateY(-2px);
 }
 
 .stat-card:hover::before {
@@ -162,10 +158,10 @@
 
 .stat-value {
     font-size: 2.2rem;
-    font-weight: 900;
+    font-weight: 600;
     line-height: 1;
-    letter-spacing: -0.03em;
-    font-family: 'Newsreader', Georgia, serif;
+    letter-spacing: -0.04em;
+    font-family: 'Inter', sans-serif;
 }
 
 .stat-label {
@@ -391,8 +387,8 @@
 }
 
 .sub-search:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(200, 103, 58, 0.12);
+    border-color: var(--border-bright);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.04);
 }
 
 .verdict-filters {
@@ -420,9 +416,9 @@
 }
 
 .vf-btn.active {
-    background: rgba(207, 103, 57, 0.15);
-    border-color: rgba(207, 103, 57, 0.45);
-    color: var(--accent-vibrant);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-bright);
+    color: var(--text);
 }
 
 .sub-count {
@@ -442,14 +438,14 @@
 }
 
 .sub-table-header {
-    background: rgba(207, 103, 57, 0.03);
+    background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
-    border-radius: 10px 10px 0 0;
-    font-size: 0.7rem;
+    border-radius: 8px 8px 0 0;
+    font-size: 0.67rem;
     text-transform: uppercase;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.08em;
     color: var(--text-dim);
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .sortable-header {
@@ -506,7 +502,7 @@
 }
 
 .sub-row:hover {
-    background: rgba(207, 103, 57, 0.05);
+    background: rgba(255, 255, 255, 0.025);
 }
 
 .sub-row.ac {
@@ -564,7 +560,8 @@
 }
 
 .prob-link:hover {
-    color: var(--accent-vibrant);
+    color: var(--text);
+    opacity: 0.8;
 }
 
 .prob-id {
@@ -599,13 +596,13 @@
 }
 
 .sub-tag {
-    background: rgba(197, 164, 126, 0.1);
-    border: 1px solid rgba(197, 164, 126, 0.2);
-    color: var(--cyan);
-    font-size: 0.68rem;
-    font-weight: 600;
-    padding: 0.15rem 0.45rem;
-    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.66rem;
+    font-weight: 400;
+    padding: 0.12rem 0.4rem;
+    border-radius: 3px;
     white-space: nowrap;
 }
 
@@ -650,9 +647,9 @@
 }
 
 .page-btn:not(:disabled):hover {
-    background: rgba(200, 103, 58, 0.08);
+    background: var(--surface-hover);
     border-color: var(--border-bright);
-    color: var(--accent-vibrant);
+    color: var(--text);
 }
 
 .page-info {
@@ -664,11 +661,11 @@
 .spinner {
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    border-top-color: var(--accent);
+    border: 1.5px solid rgba(255, 255, 255, 0.07);
+    border-top-color: rgba(255, 255, 255, 0.45);
     border-right-color: transparent;
     border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+    animation: spin 0.75s linear infinite;
     will-change: transform;
 }
 
@@ -834,10 +831,8 @@
 }
 
 .tag-highlight {
-    background: linear-gradient(135deg, var(--red), var(--orange));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--red);
+    opacity: 0.9;
 }
 
 .drilldown-close {

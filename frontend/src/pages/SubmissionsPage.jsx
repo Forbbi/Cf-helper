@@ -328,7 +328,7 @@ export default function SubmissionsPage() {
             {/* ── Header + Time Range ─────────────────────────────────────── */}
             <section className="stats-section">
                 <div className="sub-page-header">
-                    <h1 className="page-title">Submissions</h1>
+                    <h1 className="page-title">Profile</h1>
                     <div className="time-range-chips">
                         {TIME_RANGES.map(tr => (
                             <button key={tr.key} className={`tr-chip ${timeRange === tr.key ? 'active' : ''}`}

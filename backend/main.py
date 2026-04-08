@@ -4,8 +4,13 @@ from typing import List, Optional
 from pydantic import BaseModel
 import database
 import cf_client
+import httpx
+import os
+from dotenv import load_dotenv
 from models import Bookmark, BookmarkCreate, UserInfo, Problem, ProblemWithStatus, Submission, UserCreate, User, AuthToken, Contest
 from auth import verify_google_token, create_access_token, get_current_user, get_current_user_optional
+
+load_dotenv()
 
 app = FastAPI(title="CF Tracker API", version="1.0.0")
 
@@ -193,3 +198,33 @@ async def get_contests():
         return upcoming + recent
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"CF API error: {str(e)}")
+
+
+class CompileRequest(BaseModel):
+    code: str
+    input: str = ""
+    compiler: str = "g++-15"
+
+@app.post("/api/compile")
+async def compile_code(req: CompileRequest):
+    """Proxy to onlinecompiler.io to avoid CORS issues in the browser."""
+    api_key = os.environ.get("COMPILER_API_KEY", "")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="COMPILER_API_KEY not set on server")
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            resp = await client.post(
+                "https://api.onlinecompiler.io/api/run-code-sync/",
+                headers={
+                    "Authorization": api_key,
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "compiler": req.compiler,
+                    "code": req.code,
+                    "input": req.input,
+                },
+            )
+        return resp.json()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Compiler error: {str(e)}")

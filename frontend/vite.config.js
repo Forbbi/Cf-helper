@@ -6,7 +6,13 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 5173,
-        allowedHosts: ['35.229.93.108.nip.io']
+        allowedHosts: ['35.229.93.108.nip.io'],
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8000',
+                changeOrigin: true,
+            },
+        },
     },
     build: {
         rollupOptions: {

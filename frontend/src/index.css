@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap');
 
 *,
 *::before,
@@ -9,47 +9,46 @@
 }
 
 :root {
-    /* ── Core backgrounds ──────────────────────────────────────── */
-    --bg:           #0f0f0d;
-    --bg-depth:     #0a0a09;
-    --surface:      rgba(255, 255, 255, 0.03);
-    --surface-hover: rgba(255, 255, 255, 0.06);
-    --glass:        rgba(15, 15, 13, 0.85);
+    /* ── Backgrounds ─────────────────────────────────────────── */
+    --bg:            #111110;
+    --bg-depth:      #0d0d0c;
+    --surface:       rgba(255, 255, 255, 0.03);
+    --surface-hover: rgba(255, 255, 255, 0.055);
+    --glass:         rgba(17, 17, 16, 0.9);
 
-    /* ── Borders ───────────────────────────────────────────────── */
+    /* ── Borders ─────────────────────────────────────────────── */
     --border:        rgba(255, 255, 255, 0.07);
     --border-bright: rgba(255, 255, 255, 0.14);
-    --border-glow:   rgba(218, 119, 86, 0.18);
 
-    /* ── Primary accent: warm terracotta ────────────────────────── */
-    --accent:        #c8673a;
-    --accent-glow:   rgba(200, 103, 58, 0.15);
-    --accent-vibrant: #d9774e;
+    /* ── Accent: crisp white-ish ─────────────────────────────── */
+    --accent:        #f5f5f3;
+    --accent-glow:   rgba(245, 245, 243, 0.06);
+    --accent-vibrant: #ffffff;
 
-    /* ── Secondary accent: warm sand ───────────────────────────── */
-    --cyan:          #c4a07a;
-    --cyan-glow:     rgba(196, 160, 122, 0.12);
-    --cyan-dim:      rgba(196, 160, 122, 0.12);
+    /* ── Secondary: muted cool grey ─────────────────────────── */
+    --cyan:          #8a8a88;
+    --cyan-glow:     rgba(138, 138, 136, 0.08);
+    --cyan-dim:      rgba(138, 138, 136, 0.08);
 
-    /* ── Text ──────────────────────────────────────────────────── */
-    --text:           #ede8de;
-    --text-secondary: #9a9895;
-    --text-dim:       #5e5c59;
+    /* ── Text ────────────────────────────────────────────────── */
+    --text:           #f2f2f0;
+    --text-secondary: #8a8a88;
+    --text-dim:       #4a4a48;
 
-    /* ── Status colors: desaturated, professional ───────────────── */
-    --green:      #5a9e75;
-    --green-glow: rgba(90, 158, 117, 0.1);
-    --red:        #a85757;
-    --red-glow:   rgba(168, 87, 87, 0.1);
-    --yellow:     #b8903a;
-    --blue:       #6a95b0;
-    --orange:     #c8673a;
+    /* ── Status colors: desaturated ──────────────────────────── */
+    --green:      #6aaa84;
+    --green-glow: rgba(106, 170, 132, 0.1);
+    --red:        #c06060;
+    --red-glow:   rgba(192, 96, 96, 0.1);
+    --yellow:     #b89a4a;
+    --blue:       #6a8aaa;
+    --orange:     #b07040;
 
-    /* ── Gradients ─────────────────────────────────────────────── */
+    /* ── Gradients ───────────────────────────────────────────── */
     --grad-accent: linear-gradient(135deg, var(--accent-vibrant), var(--cyan));
-    --grad-card:   linear-gradient(135deg, rgba(200, 103, 58, 0.06), rgba(196, 160, 122, 0.03));
+    --grad-card:   linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
 
-    /* ── Easing ────────────────────────────────────────────────── */
+    /* ── Easing ──────────────────────────────────────────────── */
     --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -71,25 +70,23 @@ body {
     overflow-x: hidden;
 }
 
-h1,
-h2,
-h3,
-h4,
-.page-title,
-.nav-logo {
-    font-family: 'Newsreader', 'Georgia', serif;
-    font-style: italic;
+h1, h2, h3, h4,
+.page-title {
+    font-family: 'Press Start 2P', monospace;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.02em;
 }
 
 code,
 .mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
-/* ── Custom Scrollbar ─────────────────────────────────────────────────── */
+/* ── Custom Scrollbar ────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -97,12 +94,12 @@ code,
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(207, 103, 57, 0.4);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(207, 103, 57, 0.7);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 a {
@@ -118,7 +115,7 @@ button {
     outline: none;
 }
 
-/* ── Background ───────────────────────────────────────────────────────── */
+/* ── Background ──────────────────────────────────────────────────── */
 .bg-mesh {
     position: fixed;
     top: 0;
@@ -130,79 +127,51 @@ button {
     overflow: hidden;
 }
 
-/* Subtle warm radial tints */
+/* Extremely subtle grain/depth */
 .bg-mesh::before {
     content: '';
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle 800px at 15% 15%,  rgba(200, 103, 58, 0.06) 0%, transparent 80%),
-        radial-gradient(circle 600px at 85% 85%, rgba(196, 160, 122, 0.04) 0%, transparent 80%),
-        radial-gradient(circle 400px at 50% 50%,  rgba(200, 103, 58, 0.02) 0%, transparent 70%);
+        radial-gradient(circle 1000px at 10% 10%,  rgba(255, 255, 255, 0.018) 0%, transparent 70%),
+        radial-gradient(circle 700px at 90% 90%,  rgba(255, 255, 255, 0.012) 0%, transparent 70%);
     pointer-events: none;
-    animation: pulseGlow 10s var(--ease) infinite alternate;
 }
 
-@keyframes pulseGlow {
-    0%   { opacity: 0.85; transform: scale(1); }
-    100% { opacity: 1; transform: scale(1.03); }
-}
-
-/* Subtle warm grid lines */
 .bg-mesh::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: gridPan 100s linear infinite;
-    pointer-events: none;
-    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-}
-
-@keyframes gridPan {
-    0%   { background-position: 0 0; }
-    100% { background-position: 50px 50px; }
+    display: none;
 }
 
 .mesh-orb {
     display: none;
 }
 
-/* ── Glass card utility ────────────────────────────────────────────────── */
+/* ── Glass card utility ──────────────────────────────────────────── */
 .glass-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    backdrop-filter: blur(12px) saturate(180%);
-    transition: all 0.3s var(--ease);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    backdrop-filter: blur(12px) saturate(150%);
+    transition: all 0.25s var(--ease);
 }
 
 .glass-card:hover {
     background: var(--surface-hover);
     border-color: var(--border-bright);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
-/* ── Glow text utility ─────────────────────────────────────────────────── */
+/* ── Glow text utility ───────────────────────────────────────────── */
 .glow-text {
-    background: var(--grad-accent);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent);
 }
 
-/* ── Spinner ───────────────────────────────────────────────────────────── */
+/* ── Spinner ─────────────────────────────────────────────────────── */
 .spinner {
     width: 20px;
     height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.07);
-    border-top-color: var(--accent);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-top-color: rgba(255, 255, 255, 0.5);
     border-right-color: transparent;
     border-radius: 50%;
     animation: spin 0.75s linear infinite;

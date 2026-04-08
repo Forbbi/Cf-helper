@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import ProblemsPage from './pages/ProblemsPage';
 import BookmarksPage from './pages/BookmarksPage';
 import SubmissionsPage from './pages/SubmissionsPage';
-import ContestsPage from './pages/ContestsPage';
+import CompilerPage from './pages/CompilerPage';
 import './App.css';
 
 const pageVariants = {
@@ -23,7 +23,7 @@ const pageTransition = {
 };
 
 export default function App() {
-    const [activePage, setActivePage] = useState('problems');
+    const [activePage, setActivePage] = useState('submissions');
 
     return (
         <AuthProvider>
@@ -49,7 +49,7 @@ export default function App() {
                                 {activePage === 'problems' && <ProblemsPage />}
                                 {activePage === 'bookmarks' && <BookmarksPage />}
                                 {activePage === 'submissions' && <SubmissionsPage />}
-                                {activePage === 'contests' && <ContestsPage />}
+                                {activePage === 'compiler' && <CompilerPage />}
                             </motion.div>
                         </AnimatePresence>
                     </div>

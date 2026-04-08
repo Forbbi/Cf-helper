@@ -63,12 +63,17 @@ export default function Navbar({ activePage, onNavigate }) {
 
     return (
         <nav className="navbar">
-            <div className="navbar-brand" onClick={() => onNavigate('problems')}>
-                <span className="navbar-logo">⚡</span>
+            <div className="navbar-brand" onClick={() => onNavigate('submissions')}>
                 <span className="navbar-title">CF<span className="accent">Tracker</span></span>
             </div>
 
             <div className="navbar-links">
+                <button
+                    className={`nav-link ${activePage === 'submissions' ? 'active' : ''}`}
+                    onClick={() => onNavigate('submissions')}
+                >
+                    Profile
+                </button>
                 <button
                     className={`nav-link ${activePage === 'problems' ? 'active' : ''}`}
                     onClick={() => onNavigate('problems')}
@@ -86,16 +91,10 @@ export default function Navbar({ activePage, onNavigate }) {
                     </>
                 )}
                 <button
-                    className={`nav-link ${activePage === 'submissions' ? 'active' : ''}`}
-                    onClick={() => onNavigate('submissions')}
+                    className={`nav-link ${activePage === 'compiler' ? 'active' : ''}`}
+                    onClick={() => onNavigate('compiler')}
                 >
-                    Submissions
-                </button>
-                <button
-                    className={`nav-link ${activePage === 'contests' ? 'active' : ''}`}
-                    onClick={() => onNavigate('contests')}
-                >
-                    Contests
+                    Compiler
                 </button>
             </div>
 
